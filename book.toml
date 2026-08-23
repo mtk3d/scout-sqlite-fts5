@@ -21,7 +21,9 @@ enable = true
 
 [output.html.fold]
 enable = true
-level = 1
+# 0 closes every section by default; the decision records are reference
+# material and should not push the pages above them off the screen.
+level = 0
 
 [preprocessor]
 

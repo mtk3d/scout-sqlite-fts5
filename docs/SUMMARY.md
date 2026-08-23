@@ -5,7 +5,6 @@
 ---
 
 - [How it works](how-it-works.md)
-- [Architecture](architecture.md)
 - [Filtering and ordering](filtering-and-ordering.md)
 - [Configuration](configuration.md)
 - [Recipes](recipes.md)
@@ -14,6 +13,7 @@
 
 ---
 
+- [Architecture](architecture.md)
 - [Decisions](decisions/index.md)
   - [1. SQLite FTS5 over a portable index](decisions/0001-sqlite-fts5-over-a-portable-index.md)
   - [2. Tables derived from models](decisions/0002-tables-derived-from-models.md)
