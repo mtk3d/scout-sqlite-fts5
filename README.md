@@ -18,19 +18,11 @@ That query finds *Jan Kowalski* despite the typo, because search runs as a casca
 
 ## Why this driver
 
-Scout's built-in `database` driver queries your columns directly, without maintaining an index of its own.
+Scout's built-in `database` driver searches your model's own columns — with `LIKE`, or through a full-text index you create yourself.
 
 Dedicated search engines — Meilisearch, Typesense, Algolia — mean running a service alongside your app. For a desktop app, a NativePHP build, a single-tenant SaaS, or a CLI tool, that is a lot of moving parts for a search box.
 
 SQLite already ships a real inverted index. This package points Scout at it.
-
-| | this package | `database` driver | Meilisearch / Typesense |
-|---|---|---|---|
-| Infrastructure | none | none | a service to run |
-| Index | FTS5 inverted index | queries columns directly | own datastore |
-| Ranking | BM25 | none | own |
-| Typo tolerance | four-pass cascade | none | built in |
-| Databases | SQLite only | all | any |
 
 If you need this on MySQL or Postgres, use [`namoshek/laravel-scout-database`](https://github.com/Namoshek/laravel-scout-database) instead — it builds a portable inverted index in ordinary tables, so it runs on every database Laravel supports.
 

@@ -10,7 +10,7 @@ Laravel has defaulted to SQLite since version 11, and a growing share of applica
 
 When one of them needs search, the options are poor at both ends.
 
-Scout's built-in `database` driver needs no infrastructure but maintains no index — it queries the columns directly, so the work grows with the table and there is no ranking to speak of.
+Scout's built-in `database` driver needs no infrastructure of its own: it searches the model's columns with `LIKE`, or through a full-text index you add and maintain yourself.
 
 The engines that do index properly — Meilisearch, Typesense, Algolia — mean adopting a second datastore: a process to run, a schema to keep in sync, credentials to manage, a network hop in the request, a new failure mode, and for the hosted ones a bill. For an application whose entire database is one file on disk, that is a large amount of machinery for a search box.
 
