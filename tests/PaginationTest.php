@@ -4,13 +4,35 @@ declare(strict_types=1);
 
 namespace Mtk3d\Scout\Fts5\Tests;
 
+use Mtk3d\Scout\Fts5\Fts5Engine;
+use Mtk3d\Scout\Fts5\Fts5Indexer;
+use Mtk3d\Scout\Fts5\Fts5Seeker;
+use Mtk3d\Scout\Fts5\Fts5ServiceProvider;
+use Mtk3d\Scout\Fts5\Normalizer\DiacriticsNormalizer;
+use Mtk3d\Scout\Fts5\SearchConfiguration;
+use Mtk3d\Scout\Fts5\SearchResult;
+use Mtk3d\Scout\Fts5\Support\Fts5Schema;
+use Mtk3d\Scout\Fts5\Support\MatchQuery;
+use Mtk3d\Scout\Fts5\Support\SearchPass;
+use Mtk3d\Scout\Fts5\Support\Tokens;
 use Mtk3d\Scout\Fts5\Tests\Stubs\Customer;
-use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 
+#[CoversClass(Fts5Seeker::class)]
+#[CoversClass(SearchResult::class)]
+#[UsesClass(Fts5Engine::class)]
+#[UsesClass(Fts5Indexer::class)]
+#[UsesClass(Fts5ServiceProvider::class)]
+#[UsesClass(SearchConfiguration::class)]
+#[UsesClass(Fts5Schema::class)]
+#[UsesClass(MatchQuery::class)]
+#[UsesClass(SearchPass::class)]
+#[UsesClass(Tokens::class)]
+#[UsesClass(DiacriticsNormalizer::class)]
 class PaginationTest extends TestCase
 {
-    #[Test]
-    public function it_reports_the_total_beyond_the_current_page(): void
+    public function testItReportsTheTotalBeyondTheCurrentPage(): void
     {
         $this->createCustomers(5);
 
@@ -21,8 +43,7 @@ class PaginationTest extends TestCase
         $this->assertSame(3, $page->lastPage());
     }
 
-    #[Test]
-    public function its_pages_neither_repeat_nor_drop_results(): void
+    public function testItsPagesNeitherRepeatNorDropResults(): void
     {
         $this->createCustomers(5);
 
@@ -38,8 +59,7 @@ class PaginationTest extends TestCase
         $this->assertSame($seen, array_unique($seen));
     }
 
-    #[Test]
-    public function it_orders_by_an_explicit_column_before_slicing_pages(): void
+    public function testItOrdersByAnExplicitColumnBeforeSlicingPages(): void
     {
         // The ordering has to reach the index query. Sorting only the models
         // of the current page would sort an arbitrary slice, and every page
@@ -59,8 +79,7 @@ class PaginationTest extends TestCase
         $this->assertSame(['Kowalski 1'], $oldest->pluck('name')->all());
     }
 
-    #[Test]
-    public function it_keeps_relevance_order_when_hydrating_models(): void
+    public function testItKeepsRelevanceOrderWhenHydratingModels(): void
     {
         Customer::create(['name' => 'Zenon Kowalski']);
         Customer::create(['name' => 'Adam Kowalski', 'notes' => str_repeat('lorem ipsum ', 40)]);
@@ -73,8 +92,7 @@ class PaginationTest extends TestCase
         );
     }
 
-    #[Test]
-    public function it_pages_through_results_lazily(): void
+    public function testItPagesThroughResultsLazily(): void
     {
         $this->createCustomers(3);
 

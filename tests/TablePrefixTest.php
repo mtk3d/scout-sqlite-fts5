@@ -4,15 +4,37 @@ declare(strict_types=1);
 
 namespace Mtk3d\Scout\Fts5\Tests;
 
+use Mtk3d\Scout\Fts5\Fts5Engine;
+use Mtk3d\Scout\Fts5\Fts5Indexer;
+use Mtk3d\Scout\Fts5\Fts5Seeker;
+use Mtk3d\Scout\Fts5\Fts5ServiceProvider;
+use Mtk3d\Scout\Fts5\Normalizer\DiacriticsNormalizer;
+use Mtk3d\Scout\Fts5\SearchConfiguration;
+use Mtk3d\Scout\Fts5\SearchResult;
 use Mtk3d\Scout\Fts5\Support\Fts5Schema;
+use Mtk3d\Scout\Fts5\Support\MatchQuery;
+use Mtk3d\Scout\Fts5\Support\SearchPass;
+use Mtk3d\Scout\Fts5\Support\Tokens;
 use Mtk3d\Scout\Fts5\Tests\Stubs\Customer;
-use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 
 /**
  * The query builder applies the connection's table prefix on its own, while
  * every hand-written SQL fragment has to apply it itself. When the two
  * disagree, nothing works — so this runs the whole path with a prefix set.
  */
+#[CoversClass(Fts5Schema::class)]
+#[UsesClass(Fts5Engine::class)]
+#[UsesClass(Fts5Indexer::class)]
+#[UsesClass(Fts5Seeker::class)]
+#[UsesClass(Fts5ServiceProvider::class)]
+#[UsesClass(SearchConfiguration::class)]
+#[UsesClass(SearchResult::class)]
+#[UsesClass(MatchQuery::class)]
+#[UsesClass(SearchPass::class)]
+#[UsesClass(Tokens::class)]
+#[UsesClass(DiacriticsNormalizer::class)]
 class TablePrefixTest extends TestCase
 {
     protected function defineEnvironment($app): void
@@ -22,8 +44,7 @@ class TablePrefixTest extends TestCase
         $app['config']->set('database.connections.testing.prefix', 'app_');
     }
 
-    #[Test]
-    public function it_creates_the_index_under_the_prefixed_name(): void
+    public function testItCreatesTheIndexUnderThePrefixedName(): void
     {
         Customer::create(['name' => 'Jan Kowalski']);
 
@@ -36,8 +57,7 @@ class TablePrefixTest extends TestCase
         $this->assertSame(['app_customers_fts'], array_map(fn ($row) => $row->name, $tables));
     }
 
-    #[Test]
-    public function it_searches_ranks_and_filters_through_the_prefix(): void
+    public function testItSearchesRanksAndFiltersThroughThePrefix(): void
     {
         Customer::create(['name' => 'Jan Kowalski', 'tenant_id' => 1]);
         Customer::create(['name' => 'Adam Kowalski', 'tenant_id' => 2, 'notes' => str_repeat('lorem ipsum ', 40)]);
@@ -58,8 +78,7 @@ class TablePrefixTest extends TestCase
         );
     }
 
-    #[Test]
-    public function it_falls_back_through_the_prefix_too(): void
+    public function testItFallsBackThroughThePrefixToo(): void
     {
         Customer::create(['name' => 'Jan Kowalski']);
 
@@ -67,8 +86,7 @@ class TablePrefixTest extends TestCase
         $this->assertSame('trigram', Customer::search('kowerlski')->raw()->pass());
     }
 
-    #[Test]
-    public function its_commands_work_through_the_prefix(): void
+    public function testItsCommandsWorkThroughThePrefix(): void
     {
         Customer::withoutSyncingToSearch(fn () => Customer::create(['name' => 'Jan Kowalski']));
 

@@ -7,15 +7,27 @@ namespace Mtk3d\Scout\Fts5\Tests;
 use Illuminate\Database\ConnectionInterface;
 use Illuminate\Support\Collection;
 use Mtk3d\Scout\Fts5\Exceptions\ScoutFts5Exception;
+use Mtk3d\Scout\Fts5\Fts5Engine;
+use Mtk3d\Scout\Fts5\Fts5Indexer;
+use Mtk3d\Scout\Fts5\Fts5ServiceProvider;
+use Mtk3d\Scout\Fts5\Normalizer\DiacriticsNormalizer;
+use Mtk3d\Scout\Fts5\SearchConfiguration;
 use Mtk3d\Scout\Fts5\Support\Fts5Schema;
 use Mtk3d\Scout\Fts5\Tests\Stubs\Article;
 use Mtk3d\Scout\Fts5\Tests\Stubs\Customer;
-use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 
+#[CoversClass(Fts5Indexer::class)]
+#[UsesClass(Fts5Engine::class)]
+#[UsesClass(Fts5ServiceProvider::class)]
+#[UsesClass(SearchConfiguration::class)]
+#[UsesClass(Fts5Schema::class)]
+#[UsesClass(DiacriticsNormalizer::class)]
+#[UsesClass(ScoutFts5Exception::class)]
 class IndexingTest extends TestCase
 {
-    #[Test]
-    public function it_creates_the_index_table_on_first_write(): void
+    public function testItCreatesTheIndexTableOnFirstWrite(): void
     {
         $schema = $this->app->make(Fts5Schema::class);
 
@@ -26,8 +38,7 @@ class IndexingTest extends TestCase
         $this->assertTrue($schema->exists('customers_fts'));
     }
 
-    #[Test]
-    public function it_stores_normalized_content_and_declared_filters(): void
+    public function testItStoresNormalizedContentAndDeclaredFilters(): void
     {
         Customer::create(['name' => 'Łukasz Żółć', 'city' => 'Kraków', 'tenant_id' => 7]);
 
@@ -37,8 +48,7 @@ class IndexingTest extends TestCase
         $this->assertSame(7, (int) $row->tenant_id);
     }
 
-    #[Test]
-    public function it_stores_integer_keys_in_the_rowid(): void
+    public function testItStoresIntegerKeysInTheRowid(): void
     {
         $customer = Customer::create(['name' => 'Jan Kowalski']);
 
@@ -50,8 +60,7 @@ class IndexingTest extends TestCase
         $this->assertNotContains('doc_id', $this->app->make(Fts5Schema::class)->columns('customers_fts'));
     }
 
-    #[Test]
-    public function it_stores_string_keys_in_a_document_column(): void
+    public function testItStoresStringKeysInADocumentColumn(): void
     {
         $article = Article::create(['title' => 'Hello']);
 
@@ -59,8 +68,7 @@ class IndexingTest extends TestCase
         $this->assertSame($article->getKey(), $this->indexRows('articles_fts')->first()->doc_id);
     }
 
-    #[Test]
-    public function it_replaces_the_previous_document_on_update(): void
+    public function testItReplacesThePreviousDocumentOnUpdate(): void
     {
         $customer = Customer::create(['name' => 'Jan Kowalski']);
 
@@ -70,8 +78,7 @@ class IndexingTest extends TestCase
         $this->assertSame('jan nowak', $this->indexRows('customers_fts')->first()->content);
     }
 
-    #[Test]
-    public function it_removes_documents_of_deleted_models(): void
+    public function testItRemovesDocumentsOfDeletedModels(): void
     {
         $customer = Customer::create(['name' => 'Jan Kowalski']);
         Customer::create(['name' => 'Anna Nowak']);
@@ -81,8 +88,7 @@ class IndexingTest extends TestCase
         $this->assertCount(1, $this->indexRows('customers_fts'));
     }
 
-    #[Test]
-    public function it_removes_documents_that_stop_being_searchable(): void
+    public function testItRemovesDocumentsThatStopBeingSearchable(): void
     {
         // Scout reads an empty searchable array as "keep this out of results".
         $customer = Customer::create(['name' => 'Jan Kowalski']);
@@ -112,8 +118,7 @@ class IndexingTest extends TestCase
         $this->assertCount(0, $this->indexRows('customers_fts'));
     }
 
-    #[Test]
-    public function it_empties_the_index_without_dropping_it_on_flush(): void
+    public function testItEmptiesTheIndexWithoutDroppingItOnFlush(): void
     {
         Customer::create(['name' => 'Jan Kowalski']);
 
@@ -123,8 +128,7 @@ class IndexingTest extends TestCase
         $this->assertCount(0, $this->indexRows('customers_fts'));
     }
 
-    #[Test]
-    public function it_refuses_to_index_when_auto_creation_is_disabled(): void
+    public function testItRefusesToIndexWhenAutoCreationIsDisabled(): void
     {
         config()->set('scout-fts5.auto_create', false);
 
@@ -134,8 +138,7 @@ class IndexingTest extends TestCase
         Customer::create(['name' => 'Jan Kowalski']);
     }
 
-    #[Test]
-    public function it_reports_an_index_that_no_longer_matches_the_model(): void
+    public function testItReportsAnIndexThatNoLongerMatchesTheModel(): void
     {
         // A table created before the model declared its filter columns cannot
         // be altered into shape: FTS5 has no ALTER TABLE.

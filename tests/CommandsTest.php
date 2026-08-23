@@ -4,15 +4,47 @@ declare(strict_types=1);
 
 namespace Mtk3d\Scout\Fts5\Tests;
 
+use Mtk3d\Scout\Fts5\Console\Concerns\ResolvesSearchableModels;
+use Mtk3d\Scout\Fts5\Console\Fts5CreateCommand;
+use Mtk3d\Scout\Fts5\Console\Fts5DropCommand;
+use Mtk3d\Scout\Fts5\Console\Fts5OptimizeCommand;
+use Mtk3d\Scout\Fts5\Console\Fts5RebuildCommand;
+use Mtk3d\Scout\Fts5\Fts5Engine;
+use Mtk3d\Scout\Fts5\Fts5Indexer;
+use Mtk3d\Scout\Fts5\Fts5Seeker;
+use Mtk3d\Scout\Fts5\Fts5ServiceProvider;
+use Mtk3d\Scout\Fts5\Normalizer\DiacriticsNormalizer;
+use Mtk3d\Scout\Fts5\SearchConfiguration;
+use Mtk3d\Scout\Fts5\SearchResult;
 use Mtk3d\Scout\Fts5\Support\Fts5Schema;
+use Mtk3d\Scout\Fts5\Support\MatchQuery;
+use Mtk3d\Scout\Fts5\Support\SearchPass;
+use Mtk3d\Scout\Fts5\Support\Tokens;
 use Mtk3d\Scout\Fts5\Tests\Stubs\Article;
 use Mtk3d\Scout\Fts5\Tests\Stubs\Customer;
-use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversTrait;
+use PHPUnit\Framework\Attributes\UsesClass;
 
+#[CoversClass(Fts5CreateCommand::class)]
+#[CoversClass(Fts5DropCommand::class)]
+#[CoversClass(Fts5OptimizeCommand::class)]
+#[CoversClass(Fts5RebuildCommand::class)]
+#[CoversTrait(ResolvesSearchableModels::class)]
+#[UsesClass(Fts5Engine::class)]
+#[UsesClass(Fts5Indexer::class)]
+#[UsesClass(Fts5Seeker::class)]
+#[UsesClass(Fts5ServiceProvider::class)]
+#[UsesClass(SearchConfiguration::class)]
+#[UsesClass(SearchResult::class)]
+#[UsesClass(Fts5Schema::class)]
+#[UsesClass(MatchQuery::class)]
+#[UsesClass(SearchPass::class)]
+#[UsesClass(Tokens::class)]
+#[UsesClass(DiacriticsNormalizer::class)]
 class CommandsTest extends TestCase
 {
-    #[Test]
-    public function it_creates_the_index_of_a_named_model(): void
+    public function testItCreatesTheIndexOfANamedModel(): void
     {
         $this->artisan('scout:fts5-create', ['model' => [Customer::class]])->assertSuccessful();
 
@@ -20,8 +52,7 @@ class CommandsTest extends TestCase
         $this->assertContains('tenant_id', $this->schema()->columns('customers_fts'));
     }
 
-    #[Test]
-    public function it_discovers_searchable_models_when_none_are_named(): void
+    public function testItDiscoversSearchableModelsWhenNoneAreNamed(): void
     {
         config()->set('scout-fts5.model_paths', [__DIR__.'/Stubs']);
 
@@ -32,8 +63,7 @@ class CommandsTest extends TestCase
         $this->assertTrue($this->schema()->exists('posts_fts'));
     }
 
-    #[Test]
-    public function it_uses_the_configured_model_list_over_scanning(): void
+    public function testItUsesTheConfiguredModelListOverScanning(): void
     {
         config()->set('scout-fts5.models', [Article::class]);
         config()->set('scout-fts5.model_paths', [__DIR__.'/Stubs']);
@@ -44,8 +74,7 @@ class CommandsTest extends TestCase
         $this->assertFalse($this->schema()->exists('customers_fts'));
     }
 
-    #[Test]
-    public function it_leaves_an_existing_index_alone_unless_asked_for_a_fresh_one(): void
+    public function testItLeavesAnExistingIndexAloneUnlessAskedForAFreshOne(): void
     {
         Customer::create(['name' => 'Jan Kowalski']);
 
@@ -56,8 +85,7 @@ class CommandsTest extends TestCase
         $this->assertSame(0, $this->rowsIn('customers_fts'));
     }
 
-    #[Test]
-    public function it_drops_an_index(): void
+    public function testItDropsAnIndex(): void
     {
         Customer::create(['name' => 'Jan Kowalski']);
 
@@ -66,8 +94,7 @@ class CommandsTest extends TestCase
         $this->assertFalse($this->schema()->exists('customers_fts'));
     }
 
-    #[Test]
-    public function it_rebuilds_an_index_from_the_models_table(): void
+    public function testItRebuildsAnIndexFromTheModelsTable(): void
     {
         Customer::withoutSyncingToSearch(function () {
             Customer::create(['name' => 'Jan Kowalski']);
@@ -82,8 +109,7 @@ class CommandsTest extends TestCase
         $this->assertSame(2, $this->rowsIn('customers_fts'));
     }
 
-    #[Test]
-    public function it_optimizes_an_index(): void
+    public function testItOptimizesAnIndex(): void
     {
         Customer::create(['name' => 'Jan Kowalski']);
 
@@ -92,16 +118,14 @@ class CommandsTest extends TestCase
         $this->assertCount(1, Customer::search('kowalski')->get());
     }
 
-    #[Test]
-    public function it_skips_classes_that_are_not_searchable_models(): void
+    public function testItSkipsClassesThatAreNotSearchableModels(): void
     {
         $this->artisan('scout:fts5-create', ['model' => [self::class]])
             ->expectsOutputToContain('is not a searchable Eloquent model')
             ->assertSuccessful();
     }
 
-    #[Test]
-    public function it_says_so_when_there_is_nothing_to_do(): void
+    public function testItSaysSoWhenThereIsNothingToDo(): void
     {
         config()->set('scout-fts5.model_paths', [__DIR__.'/nowhere']);
 

@@ -5,13 +5,36 @@ declare(strict_types=1);
 namespace Mtk3d\Scout\Fts5\Tests;
 
 use Mtk3d\Scout\Fts5\Exceptions\ScoutFts5Exception;
+use Mtk3d\Scout\Fts5\Fts5Engine;
+use Mtk3d\Scout\Fts5\Fts5Indexer;
+use Mtk3d\Scout\Fts5\Fts5Seeker;
+use Mtk3d\Scout\Fts5\Fts5ServiceProvider;
+use Mtk3d\Scout\Fts5\Normalizer\DiacriticsNormalizer;
+use Mtk3d\Scout\Fts5\SearchConfiguration;
+use Mtk3d\Scout\Fts5\SearchResult;
+use Mtk3d\Scout\Fts5\Support\Fts5Schema;
+use Mtk3d\Scout\Fts5\Support\MatchQuery;
+use Mtk3d\Scout\Fts5\Support\SearchPass;
+use Mtk3d\Scout\Fts5\Support\Tokens;
 use Mtk3d\Scout\Fts5\Tests\Stubs\Customer;
-use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 
+#[CoversClass(Fts5Seeker::class)]
+#[UsesClass(Fts5Engine::class)]
+#[UsesClass(Fts5Indexer::class)]
+#[UsesClass(Fts5ServiceProvider::class)]
+#[UsesClass(SearchConfiguration::class)]
+#[UsesClass(SearchResult::class)]
+#[UsesClass(Fts5Schema::class)]
+#[UsesClass(MatchQuery::class)]
+#[UsesClass(SearchPass::class)]
+#[UsesClass(Tokens::class)]
+#[UsesClass(DiacriticsNormalizer::class)]
+#[UsesClass(ScoutFts5Exception::class)]
 class FilterTest extends TestCase
 {
-    #[Test]
-    public function it_filters_on_a_column_stored_in_the_index(): void
+    public function testItFiltersOnAColumnStoredInTheIndex(): void
     {
         Customer::create(['name' => 'Jan Kowalski', 'tenant_id' => 1]);
         Customer::create(['name' => 'Adam Kowalski', 'tenant_id' => 2]);
@@ -22,8 +45,7 @@ class FilterTest extends TestCase
         );
     }
 
-    #[Test]
-    public function it_filters_on_a_column_that_only_exists_on_the_model(): void
+    public function testItFiltersOnAColumnThatOnlyExistsOnTheModel(): void
     {
         // `status` is not part of the index. Since the index lives in the same
         // SQLite database as the models, the filter is answered by joining
@@ -37,8 +59,7 @@ class FilterTest extends TestCase
         );
     }
 
-    #[Test]
-    public function it_supports_comparison_operators(): void
+    public function testItSupportsComparisonOperators(): void
     {
         Customer::create(['name' => 'Jan Kowalski', 'tenant_id' => 1]);
         Customer::create(['name' => 'Adam Kowalski', 'tenant_id' => 5]);
@@ -49,8 +70,7 @@ class FilterTest extends TestCase
         );
     }
 
-    #[Test]
-    public function it_supports_where_in_and_where_not_in(): void
+    public function testItSupportsWhereInAndWhereNotIn(): void
     {
         Customer::create(['name' => 'Jan Kowalski', 'tenant_id' => 1]);
         Customer::create(['name' => 'Adam Kowalski', 'tenant_id' => 2]);
@@ -67,8 +87,7 @@ class FilterTest extends TestCase
         );
     }
 
-    #[Test]
-    public function it_counts_only_the_documents_that_pass_the_filter(): void
+    public function testItCountsOnlyTheDocumentsThatPassTheFilter(): void
     {
         foreach (range(1, 6) as $number) {
             Customer::create(['name' => "Kowalski {$number}", 'tenant_id' => $number <= 2 ? 1 : 2]);
@@ -79,8 +98,7 @@ class FilterTest extends TestCase
         $this->assertSame(2, $page->total());
     }
 
-    #[Test]
-    public function it_applies_filters_to_the_fallback_passes_too(): void
+    public function testItAppliesFiltersToTheFallbackPassesToo(): void
     {
         Customer::create(['name' => 'Jan Kowalski', 'tenant_id' => 1]);
         Customer::create(['name' => 'Adam Kowalski', 'tenant_id' => 2]);
@@ -91,8 +109,7 @@ class FilterTest extends TestCase
         $this->assertSame(1, $result->total());
     }
 
-    #[Test]
-    public function it_rejects_a_filter_on_an_unknown_field(): void
+    public function testItRejectsAFilterOnAnUnknownField(): void
     {
         Customer::create(['name' => 'Jan Kowalski']);
 

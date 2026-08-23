@@ -7,6 +7,9 @@
         },
         "concat_space": {
             "spacing": "none"
+        },
+        "php_unit_method_casing": {
+            "case": "camel_case"
         }
     }
 }

@@ -4,10 +4,32 @@ declare(strict_types=1);
 
 namespace Mtk3d\Scout\Fts5\Tests;
 
+use Mtk3d\Scout\Fts5\Fts5Engine;
+use Mtk3d\Scout\Fts5\Fts5Indexer;
+use Mtk3d\Scout\Fts5\Fts5Seeker;
+use Mtk3d\Scout\Fts5\Fts5ServiceProvider;
+use Mtk3d\Scout\Fts5\Normalizer\DiacriticsNormalizer;
+use Mtk3d\Scout\Fts5\SearchConfiguration;
+use Mtk3d\Scout\Fts5\SearchResult;
 use Mtk3d\Scout\Fts5\Support\Fts5Schema;
+use Mtk3d\Scout\Fts5\Support\MatchQuery;
+use Mtk3d\Scout\Fts5\Support\SearchPass;
+use Mtk3d\Scout\Fts5\Support\Tokens;
 use Mtk3d\Scout\Fts5\Tests\Stubs\Post;
-use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 
+#[CoversClass(Fts5Schema::class)]
+#[CoversClass(Fts5Indexer::class)]
+#[UsesClass(Fts5Engine::class)]
+#[UsesClass(Fts5Seeker::class)]
+#[UsesClass(Fts5ServiceProvider::class)]
+#[UsesClass(SearchConfiguration::class)]
+#[UsesClass(SearchResult::class)]
+#[UsesClass(MatchQuery::class)]
+#[UsesClass(SearchPass::class)]
+#[UsesClass(Tokens::class)]
+#[UsesClass(DiacriticsNormalizer::class)]
 class SoftDeleteTest extends TestCase
 {
     protected function defineEnvironment($app): void
@@ -17,8 +39,7 @@ class SoftDeleteTest extends TestCase
         $app['config']->set('scout.soft_delete', true);
     }
 
-    #[Test]
-    public function it_adds_a_soft_delete_column_to_the_index(): void
+    public function testItAddsASoftDeleteColumnToTheIndex(): void
     {
         Post::create(['title' => 'Wymiana rozrządu']);
 
@@ -28,8 +49,7 @@ class SoftDeleteTest extends TestCase
         );
     }
 
-    #[Test]
-    public function it_hides_trashed_models_but_keeps_them_indexed(): void
+    public function testItHidesTrashedModelsButKeepsThemIndexed(): void
     {
         $post = Post::create(['title' => 'Wymiana rozrządu']);
 
@@ -39,8 +59,7 @@ class SoftDeleteTest extends TestCase
         $this->assertCount(1, $this->app->make('db')->connection()->table('posts_fts')->get());
     }
 
-    #[Test]
-    public function it_finds_trashed_models_when_asked_to(): void
+    public function testItFindsTrashedModelsWhenAskedTo(): void
     {
         $post = Post::create(['title' => 'Wymiana rozrządu']);
         $post->delete();
@@ -49,8 +68,7 @@ class SoftDeleteTest extends TestCase
         $this->assertCount(1, Post::search('wymiana')->onlyTrashed()->get());
     }
 
-    #[Test]
-    public function it_shows_restored_models_again(): void
+    public function testItShowsRestoredModelsAgain(): void
     {
         $post = Post::create(['title' => 'Wymiana rozrządu']);
         $post->delete();

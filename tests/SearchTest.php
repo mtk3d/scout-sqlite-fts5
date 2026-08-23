@@ -4,15 +4,36 @@ declare(strict_types=1);
 
 namespace Mtk3d\Scout\Fts5\Tests;
 
+use Mtk3d\Scout\Fts5\Fts5Engine;
+use Mtk3d\Scout\Fts5\Fts5Indexer;
+use Mtk3d\Scout\Fts5\Fts5Seeker;
+use Mtk3d\Scout\Fts5\Fts5ServiceProvider;
+use Mtk3d\Scout\Fts5\Normalizer\DiacriticsNormalizer;
+use Mtk3d\Scout\Fts5\SearchConfiguration;
 use Mtk3d\Scout\Fts5\SearchResult;
+use Mtk3d\Scout\Fts5\Support\Fts5Schema;
+use Mtk3d\Scout\Fts5\Support\MatchQuery;
+use Mtk3d\Scout\Fts5\Support\SearchPass;
+use Mtk3d\Scout\Fts5\Support\Tokens;
 use Mtk3d\Scout\Fts5\Tests\Stubs\Article;
 use Mtk3d\Scout\Fts5\Tests\Stubs\Customer;
-use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 
+#[CoversClass(Fts5Seeker::class)]
+#[UsesClass(Fts5Engine::class)]
+#[UsesClass(Fts5Indexer::class)]
+#[UsesClass(Fts5ServiceProvider::class)]
+#[UsesClass(SearchConfiguration::class)]
+#[UsesClass(SearchResult::class)]
+#[UsesClass(Fts5Schema::class)]
+#[UsesClass(MatchQuery::class)]
+#[UsesClass(SearchPass::class)]
+#[UsesClass(Tokens::class)]
+#[UsesClass(DiacriticsNormalizer::class)]
 class SearchTest extends TestCase
 {
-    #[Test]
-    public function it_matches_a_word_by_prefix(): void
+    public function testItMatchesAWordByPrefix(): void
     {
         Customer::create(['name' => 'Jan Kowalski']);
         Customer::create(['name' => 'Anna Nowak']);
@@ -20,8 +41,7 @@ class SearchTest extends TestCase
         $this->assertSame(['Jan Kowalski'], $this->names('kowal'));
     }
 
-    #[Test]
-    public function it_ignores_diacritics_in_both_directions(): void
+    public function testItIgnoresDiacriticsInBothDirections(): void
     {
         Customer::create(['name' => 'Łukasz Żółć', 'city' => 'Kraków']);
 
@@ -30,8 +50,7 @@ class SearchTest extends TestCase
         $this->assertSame(['Łukasz Żółć'], $this->names('lukasz'));
     }
 
-    #[Test]
-    public function it_requires_every_word_to_match(): void
+    public function testItRequiresEveryWordToMatch(): void
     {
         Customer::create(['name' => 'Jan Kowalski', 'city' => 'Kraków']);
         Customer::create(['name' => 'Jan Nowak', 'city' => 'Gdańsk']);
@@ -39,8 +58,7 @@ class SearchTest extends TestCase
         $this->assertSame(['Jan Kowalski'], $this->names('jan krakow'));
     }
 
-    #[Test]
-    public function it_reports_which_pass_answered_the_query(): void
+    public function testItReportsWhichPassAnsweredTheQuery(): void
     {
         Customer::create(['name' => 'Jan Kowalski']);
 
@@ -48,8 +66,7 @@ class SearchTest extends TestCase
         $this->assertNull($this->raw('zupelnie inne slowa')->pass());
     }
 
-    #[Test]
-    public function it_falls_back_to_a_shortened_prefix_when_a_word_ends_wrong(): void
+    public function testItFallsBackToAShortenedPrefixWhenAWordEndsWrong(): void
     {
         Customer::create(['name' => 'Jan Kowalski']);
 
@@ -59,8 +76,7 @@ class SearchTest extends TestCase
         $this->assertSame(['Jan Kowalski'], $this->names('kowalsky'));
     }
 
-    #[Test]
-    public function it_falls_back_to_any_word_when_not_all_of_them_match(): void
+    public function testItFallsBackToAnyWordWhenNotAllOfThemMatch(): void
     {
         Customer::create(['name' => 'Jan Kowalski']);
 
@@ -70,8 +86,7 @@ class SearchTest extends TestCase
         $this->assertSame(['Jan Kowalski'], $this->names('jan brzeczyszczykiewicz'));
     }
 
-    #[Test]
-    public function it_falls_back_to_substrings_when_a_word_is_misspelled_in_the_middle(): void
+    public function testItFallsBackToSubstringsWhenAWordIsMisspelledInTheMiddle(): void
     {
         Customer::create(['name' => 'Jan Kowalski']);
 
@@ -81,8 +96,7 @@ class SearchTest extends TestCase
         $this->assertSame(['Jan Kowalski'], $this->names('kowerlski'));
     }
 
-    #[Test]
-    public function it_ranks_the_better_match_first(): void
+    public function testItRanksTheBetterMatchFirst(): void
     {
         Customer::create(['name' => 'Kowalski']);
         Customer::create([
@@ -95,8 +109,7 @@ class SearchTest extends TestCase
         $this->assertSame(['Kowalski', 'Anna Nowak'], $this->names('kowalski'));
     }
 
-    #[Test]
-    public function it_treats_fts5_query_syntax_as_literal_text(): void
+    public function testItTreatsFts5QuerySyntaxAsLiteralText(): void
     {
         Customer::create(['name' => 'Jan Kowalski']);
         Customer::create(['name' => 'Anna Nowak']);
@@ -112,8 +125,7 @@ class SearchTest extends TestCase
         $this->assertSame('any', $this->raw('NEAR(jan nowak)')->pass());
     }
 
-    #[Test]
-    public function it_returns_nothing_for_a_query_without_words(): void
+    public function testItReturnsNothingForAQueryWithoutWords(): void
     {
         Customer::create(['name' => 'Jan Kowalski']);
 
@@ -121,14 +133,12 @@ class SearchTest extends TestCase
         $this->assertSame(0, $this->raw('')->total());
     }
 
-    #[Test]
-    public function it_returns_nothing_when_the_index_does_not_exist_yet(): void
+    public function testItReturnsNothingWhenTheIndexDoesNotExistYet(): void
     {
         $this->assertSame([], Customer::search('kowalski')->get()->all());
     }
 
-    #[Test]
-    public function it_searches_models_with_string_keys(): void
+    public function testItSearchesModelsWithStringKeys(): void
     {
         Article::create(['title' => 'Wymiana rozrządu']);
         Article::create(['title' => 'Wymiana oleju']);
@@ -139,8 +149,7 @@ class SearchTest extends TestCase
         );
     }
 
-    #[Test]
-    public function it_honours_an_explicit_limit(): void
+    public function testItHonoursAnExplicitLimit(): void
     {
         Customer::create(['name' => 'Kowalski jeden']);
         Customer::create(['name' => 'Kowalski dwa']);
@@ -149,8 +158,7 @@ class SearchTest extends TestCase
         $this->assertCount(2, Customer::search('kowalski')->take(2)->get());
     }
 
-    #[Test]
-    public function it_hands_the_raw_result_to_scouts_callback(): void
+    public function testItHandsTheRawResultToScoutsCallback(): void
     {
         // The README suggests this for telling a user the match was fuzzy.
         Customer::create(['name' => 'Jan Kowalski']);

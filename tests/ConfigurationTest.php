@@ -6,14 +6,36 @@ namespace Mtk3d\Scout\Fts5\Tests;
 
 use Mtk3d\Scout\Fts5\Contracts\Normalizer;
 use Mtk3d\Scout\Fts5\Exceptions\ScoutFts5Exception;
+use Mtk3d\Scout\Fts5\Fts5Engine;
+use Mtk3d\Scout\Fts5\Fts5Indexer;
+use Mtk3d\Scout\Fts5\Fts5Seeker;
+use Mtk3d\Scout\Fts5\Fts5ServiceProvider;
+use Mtk3d\Scout\Fts5\Normalizer\DiacriticsNormalizer;
+use Mtk3d\Scout\Fts5\SearchConfiguration;
+use Mtk3d\Scout\Fts5\SearchResult;
 use Mtk3d\Scout\Fts5\Support\Fts5Schema;
+use Mtk3d\Scout\Fts5\Support\MatchQuery;
+use Mtk3d\Scout\Fts5\Support\SearchPass;
+use Mtk3d\Scout\Fts5\Support\Tokens;
 use Mtk3d\Scout\Fts5\Tests\Stubs\Customer;
-use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 
+#[CoversClass(SearchConfiguration::class)]
+#[CoversClass(Fts5ServiceProvider::class)]
+#[UsesClass(Fts5Engine::class)]
+#[UsesClass(Fts5Indexer::class)]
+#[UsesClass(Fts5Seeker::class)]
+#[UsesClass(SearchResult::class)]
+#[UsesClass(Fts5Schema::class)]
+#[UsesClass(MatchQuery::class)]
+#[UsesClass(SearchPass::class)]
+#[UsesClass(Tokens::class)]
+#[UsesClass(DiacriticsNormalizer::class)]
+#[UsesClass(ScoutFts5Exception::class)]
 class ConfigurationTest extends TestCase
 {
-    #[Test]
-    public function it_can_turn_off_the_fuzzy_passes(): void
+    public function testItCanTurnOffTheFuzzyPasses(): void
     {
         config()->set('scout-fts5.passes', ['prefix' => true, 'typo' => false, 'any' => false, 'trigram' => false]);
 
@@ -23,8 +45,7 @@ class ConfigurationTest extends TestCase
         $this->assertCount(0, Customer::search('kowalsky')->get());
     }
 
-    #[Test]
-    public function its_typo_pass_gives_up_on_a_tail_that_is_too_wrong(): void
+    public function testItsTypoPassGivesUpOnATailThatIsTooWrong(): void
     {
         config()->set('scout-fts5.passes', ['prefix' => true, 'typo' => true, 'any' => false, 'trigram' => false]);
 
@@ -34,8 +55,7 @@ class ConfigurationTest extends TestCase
         $this->assertCount(0, Customer::search('kowalxyzw')->get());
     }
 
-    #[Test]
-    public function it_can_be_told_how_forgiving_the_typo_pass_should_be(): void
+    public function testItCanBeToldHowForgivingTheTypoPassShouldBe(): void
     {
         config()->set('scout-fts5.passes', ['prefix' => true, 'typo' => true, 'any' => false, 'trigram' => false]);
         config()->set('scout-fts5.typo.trim', 4);
@@ -46,8 +66,7 @@ class ConfigurationTest extends TestCase
         $this->assertCount(1, Customer::search('kowalxyzw')->get());
     }
 
-    #[Test]
-    public function it_can_be_told_how_much_of_a_word_a_substring_match_needs(): void
+    public function testItCanBeToldHowMuchOfAWordASubstringMatchNeeds(): void
     {
         config()->set('scout-fts5.trigram.min_ratio', 1.0);
 
@@ -58,8 +77,7 @@ class ConfigurationTest extends TestCase
         $this->assertCount(0, Customer::search('kowerlski')->get());
     }
 
-    #[Test]
-    public function it_uses_a_custom_normalizer(): void
+    public function testItUsesACustomNormalizer(): void
     {
         $this->app->bind(Normalizer::class, fn () => new class implements Normalizer
         {
@@ -79,8 +97,7 @@ class ConfigurationTest extends TestCase
         $this->assertCount(1, Customer::search('hauptstrasse')->get());
     }
 
-    #[Test]
-    public function it_uses_a_custom_table_suffix(): void
+    public function testItUsesACustomTableSuffix(): void
     {
         config()->set('scout-fts5.suffix', '_search');
 
@@ -90,8 +107,7 @@ class ConfigurationTest extends TestCase
         $this->assertCount(1, Customer::search('kowalski')->get());
     }
 
-    #[Test]
-    public function it_uses_a_custom_tokenizer(): void
+    public function testItUsesACustomTokenizer(): void
     {
         config()->set('scout-fts5.tokenizer', 'porter unicode61 remove_diacritics 2');
 
@@ -101,8 +117,7 @@ class ConfigurationTest extends TestCase
         $this->assertCount(1, Customer::search('engineer')->get());
     }
 
-    #[Test]
-    public function it_refuses_to_run_on_a_connection_that_is_not_sqlite(): void
+    public function testItRefusesToRunOnAConnectionThatIsNotSqlite(): void
     {
         config()->set('database.connections.mysql', [
             'driver' => 'mysql',
