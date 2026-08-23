@@ -1,15 +1,19 @@
 {
     "name": "mtk3d/scout-sqlite-fts5",
-    "description": "A Laravel Scout driver that indexes your models in SQLite FTS5 virtual tables, with BM25 ranking and a typo-tolerant multi-pass search cascade.",
+    "description": "Laravel Scout driver for SQLite full-text search. Indexes your Eloquent models in SQLite FTS5 virtual tables with BM25 ranking and typo-tolerant matching, with no search service to run.",
     "keywords": [
         "laravel",
+        "laravel-scout",
         "scout",
-        "search",
+        "scout-driver",
         "sqlite",
         "fts5",
         "full-text-search",
+        "fulltext",
+        "search",
         "bm25",
-        "fuzzy-search"
+        "fuzzy-search",
+        "nativephp"
     ],
     "homepage": "https://github.com/mtk3d/scout-sqlite-fts5",
     "license": "MIT",

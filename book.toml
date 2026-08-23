@@ -1,6 +1,6 @@
 [book]
-title = "Scout SQLite FTS5"
-description = "A Laravel Scout driver backed by SQLite FTS5 — BM25 ranking and a typo-tolerant multi-pass search cascade, with no service to run."
+title = "Laravel Scout SQLite FTS5 Driver"
+description = "Laravel Scout driver for SQLite full-text search. Indexes your Eloquent models in SQLite FTS5 virtual tables with BM25 ranking and typo-tolerant matching, with no search service to run."
 authors = ["Mateusz Cholewka"]
 language = "en"
 src = "docs"

@@ -1,6 +1,6 @@
-# Scout SQLite FTS5
+# Laravel Scout SQLite FTS5 Driver
 
-A [Laravel Scout](https://laravel.com/docs/scout) driver that keeps your search index in SQLite's own full-text engine — [FTS5](https://www.sqlite.org/fts5.html) — right next to your data.
+Full-text search for your Eloquent models, powered by SQLite's own [FTS5](https://www.sqlite.org/fts5.html) engine. A [Laravel Scout](https://laravel.com/docs/scout) driver that keeps the search index right next to your data.
 
 No daemon, no API key, no second datastore to keep in sync.
 
