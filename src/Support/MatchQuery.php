@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Wrenchr\Scout\Fts5\Support;
+namespace Mtk3d\Scout\Fts5\Support;
 
 /**
  * Builds FTS5 `MATCH` expressions out of user input.

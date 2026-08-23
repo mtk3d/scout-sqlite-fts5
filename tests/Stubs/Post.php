@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Wrenchr\Scout\Fts5\Tests\Stubs;
+namespace Mtk3d\Scout\Fts5\Tests\Stubs;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;

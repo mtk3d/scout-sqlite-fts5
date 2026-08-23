@@ -2,20 +2,20 @@
 
 declare(strict_types=1);
 
-namespace Wrenchr\Scout\Fts5;
+namespace Mtk3d\Scout\Fts5;
 
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Database\ConnectionInterface;
 use Illuminate\Database\DatabaseManager;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Scout\EngineManager;
-use Wrenchr\Scout\Fts5\Console\Fts5CreateCommand;
-use Wrenchr\Scout\Fts5\Console\Fts5DropCommand;
-use Wrenchr\Scout\Fts5\Console\Fts5OptimizeCommand;
-use Wrenchr\Scout\Fts5\Console\Fts5RebuildCommand;
-use Wrenchr\Scout\Fts5\Contracts\Normalizer;
-use Wrenchr\Scout\Fts5\Exceptions\ScoutFts5Exception;
-use Wrenchr\Scout\Fts5\Support\Fts5Schema;
+use Mtk3d\Scout\Fts5\Console\Fts5CreateCommand;
+use Mtk3d\Scout\Fts5\Console\Fts5DropCommand;
+use Mtk3d\Scout\Fts5\Console\Fts5OptimizeCommand;
+use Mtk3d\Scout\Fts5\Console\Fts5RebuildCommand;
+use Mtk3d\Scout\Fts5\Contracts\Normalizer;
+use Mtk3d\Scout\Fts5\Exceptions\ScoutFts5Exception;
+use Mtk3d\Scout\Fts5\Support\Fts5Schema;
 
 /**
  * Registers the `sqlite-fts5` Scout driver and everything it is built from.

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Wrenchr\Scout\Fts5\Support;
+namespace Mtk3d\Scout\Fts5\Support;
 
 /**
  * Splits normalized text into the words and substrings the search passes need.

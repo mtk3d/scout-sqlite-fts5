@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Wrenchr\Scout\Fts5\Normalizer;
+namespace Mtk3d\Scout\Fts5\Normalizer;
 
-use Wrenchr\Scout\Fts5\Contracts\Normalizer;
+use Mtk3d\Scout\Fts5\Contracts\Normalizer;
 
 /**
  * Lowercases text and folds Latin diacritics down to their ASCII base letter.

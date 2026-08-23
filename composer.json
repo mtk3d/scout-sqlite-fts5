@@ -1,8 +1,17 @@
 {
-    "name": "wrenchr/scout-sqlite-fts5",
+    "name": "mtk3d/scout-sqlite-fts5",
     "description": "A Laravel Scout driver that indexes your models in SQLite FTS5 virtual tables, with BM25 ranking and a typo-tolerant multi-pass search cascade.",
-    "keywords": ["laravel", "scout", "search", "sqlite", "fts5", "full-text-search", "bm25", "fuzzy-search"],
-    "homepage": "https://github.com/wrenchr/scout-sqlite-fts5",
+    "keywords": [
+        "laravel",
+        "scout",
+        "search",
+        "sqlite",
+        "fts5",
+        "full-text-search",
+        "bm25",
+        "fuzzy-search"
+    ],
+    "homepage": "https://github.com/mtk3d/scout-sqlite-fts5",
     "license": "MIT",
     "authors": [
         {
@@ -26,12 +35,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Wrenchr\\Scout\\Fts5\\": "src/"
+            "Mtk3d\\Scout\\Fts5\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Wrenchr\\Scout\\Fts5\\Tests\\": "tests/"
+            "Mtk3d\\Scout\\Fts5\\Tests\\": "tests/"
         }
     },
     "scripts": {
@@ -45,10 +54,14 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Wrenchr\\Scout\\Fts5\\Fts5ServiceProvider"
+                "Mtk3d\\Scout\\Fts5\\Fts5ServiceProvider"
             ]
         }
     },
     "minimum-stability": "stable",
-    "prefer-stable": true
+    "prefer-stable": true,
+    "support": {
+        "issues": "https://github.com/mtk3d/scout-sqlite-fts5/issues",
+        "source": "https://github.com/mtk3d/scout-sqlite-fts5"
+    }
 }

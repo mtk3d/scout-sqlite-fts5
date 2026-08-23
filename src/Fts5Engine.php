@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Wrenchr\Scout\Fts5;
+namespace Mtk3d\Scout\Fts5;
 
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Database\Eloquent\Model;
@@ -10,7 +10,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\LazyCollection;
 use Laravel\Scout\Builder;
 use Laravel\Scout\Engines\Engine;
-use Wrenchr\Scout\Fts5\Support\Fts5Schema;
+use Mtk3d\Scout\Fts5\Support\Fts5Schema;
 
 /**
  * A Laravel Scout engine backed by SQLite's FTS5 full-text index.

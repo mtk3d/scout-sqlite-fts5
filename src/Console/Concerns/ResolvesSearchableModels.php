@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Wrenchr\Scout\Fts5\Console\Concerns;
+namespace Mtk3d\Scout\Fts5\Console\Concerns;
 
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Scout\Searchable;

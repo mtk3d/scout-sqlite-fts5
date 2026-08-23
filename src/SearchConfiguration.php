@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Wrenchr\Scout\Fts5;
+namespace Mtk3d\Scout\Fts5;
 
 /**
  * A typed view over the `scout-fts5` config array.

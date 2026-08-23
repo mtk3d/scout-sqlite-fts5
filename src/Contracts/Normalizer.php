@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Wrenchr\Scout\Fts5\Contracts;
+namespace Mtk3d\Scout\Fts5\Contracts;
 
 /**
  * Normalizes text before it is indexed and before it is searched for.

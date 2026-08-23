@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Wrenchr\Scout\Fts5\Tests;
+namespace Mtk3d\Scout\Fts5\Tests;
 
+use Mtk3d\Scout\Fts5\SearchResult;
+use Mtk3d\Scout\Fts5\Tests\Stubs\Article;
+use Mtk3d\Scout\Fts5\Tests\Stubs\Customer;
 use PHPUnit\Framework\Attributes\Test;
-use Wrenchr\Scout\Fts5\SearchResult;
-use Wrenchr\Scout\Fts5\Tests\Stubs\Article;
-use Wrenchr\Scout\Fts5\Tests\Stubs\Customer;
 
 class SearchTest extends TestCase
 {
@@ -147,6 +147,24 @@ class SearchTest extends TestCase
         Customer::create(['name' => 'Kowalski trzy']);
 
         $this->assertCount(2, Customer::search('kowalski')->take(2)->get());
+    }
+
+    #[Test]
+    public function it_hands_the_raw_result_to_scouts_callback(): void
+    {
+        // The README suggests this for telling a user the match was fuzzy.
+        Customer::create(['name' => 'Jan Kowalski']);
+
+        $pass = null;
+
+        $customers = Customer::search('kowalsky')
+            ->withRawResults(function (SearchResult $result) use (&$pass) {
+                $pass = $result->pass();
+            })
+            ->paginate(10);
+
+        $this->assertSame('typo', $pass);
+        $this->assertCount(1, $customers);
     }
 
     /**

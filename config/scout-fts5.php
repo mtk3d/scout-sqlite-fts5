@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use Wrenchr\Scout\Fts5\Normalizer\DiacriticsNormalizer;
+use Mtk3d\Scout\Fts5\Normalizer\DiacriticsNormalizer;
 
 return [
 
@@ -70,7 +70,7 @@ return [
     | agree. The default lowercases and folds Latin diacritics, which is what
     | makes the `LIKE` substring fallback work on accented text.
     |
-    | Implement `Wrenchr\Scout\Fts5\Contracts\Normalizer` for your own.
+    | Implement `Mtk3d\Scout\Fts5\Contracts\Normalizer` for your own.
     |
     */
 

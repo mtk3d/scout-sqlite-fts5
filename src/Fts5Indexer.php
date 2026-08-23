@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Wrenchr\Scout\Fts5;
+namespace Mtk3d\Scout\Fts5;
 
 use Illuminate\Database\ConnectionInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
+use Mtk3d\Scout\Fts5\Contracts\Normalizer;
+use Mtk3d\Scout\Fts5\Exceptions\ScoutFts5Exception;
+use Mtk3d\Scout\Fts5\Support\Fts5Schema;
 use Throwable;
-use Wrenchr\Scout\Fts5\Contracts\Normalizer;
-use Wrenchr\Scout\Fts5\Exceptions\ScoutFts5Exception;
-use Wrenchr\Scout\Fts5\Support\Fts5Schema;
 
 /**
  * Writes searchable models into their FTS5 index table.

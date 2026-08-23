@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Wrenchr\Scout\Fts5\Exceptions;
+namespace Mtk3d\Scout\Fts5\Exceptions;
 
 use RuntimeException;
 

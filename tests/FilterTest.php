@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Wrenchr\Scout\Fts5\Tests;
+namespace Mtk3d\Scout\Fts5\Tests;
 
+use Mtk3d\Scout\Fts5\Exceptions\ScoutFts5Exception;
+use Mtk3d\Scout\Fts5\Tests\Stubs\Customer;
 use PHPUnit\Framework\Attributes\Test;
-use Wrenchr\Scout\Fts5\Exceptions\ScoutFts5Exception;
-use Wrenchr\Scout\Fts5\Tests\Stubs\Customer;
 
 class FilterTest extends TestCase
 {

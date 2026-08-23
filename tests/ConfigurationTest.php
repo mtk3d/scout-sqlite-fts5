@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Wrenchr\Scout\Fts5\Tests;
+namespace Mtk3d\Scout\Fts5\Tests;
 
+use Mtk3d\Scout\Fts5\Contracts\Normalizer;
+use Mtk3d\Scout\Fts5\Exceptions\ScoutFts5Exception;
+use Mtk3d\Scout\Fts5\Support\Fts5Schema;
+use Mtk3d\Scout\Fts5\Tests\Stubs\Customer;
 use PHPUnit\Framework\Attributes\Test;
-use Wrenchr\Scout\Fts5\Contracts\Normalizer;
-use Wrenchr\Scout\Fts5\Exceptions\ScoutFts5Exception;
-use Wrenchr\Scout\Fts5\Support\Fts5Schema;
-use Wrenchr\Scout\Fts5\Tests\Stubs\Customer;
 
 class ConfigurationTest extends TestCase
 {

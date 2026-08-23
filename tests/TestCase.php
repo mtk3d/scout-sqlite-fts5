@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Wrenchr\Scout\Fts5\Tests;
+namespace Mtk3d\Scout\Fts5\Tests;
 
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use Laravel\Scout\ScoutServiceProvider;
+use Mtk3d\Scout\Fts5\Fts5ServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
-use Wrenchr\Scout\Fts5\Fts5ServiceProvider;
 
 abstract class TestCase extends Orchestra
 {

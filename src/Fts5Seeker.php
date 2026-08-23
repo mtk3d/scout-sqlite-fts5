@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace Wrenchr\Scout\Fts5;
+namespace Mtk3d\Scout\Fts5;
 
 use Illuminate\Database\ConnectionInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Database\Query\Expression;
 use Laravel\Scout\Builder;
-use Wrenchr\Scout\Fts5\Contracts\Normalizer;
-use Wrenchr\Scout\Fts5\Exceptions\ScoutFts5Exception;
-use Wrenchr\Scout\Fts5\Support\Fts5Schema;
-use Wrenchr\Scout\Fts5\Support\MatchQuery;
-use Wrenchr\Scout\Fts5\Support\SearchPass;
-use Wrenchr\Scout\Fts5\Support\Tokens;
+use Mtk3d\Scout\Fts5\Contracts\Normalizer;
+use Mtk3d\Scout\Fts5\Exceptions\ScoutFts5Exception;
+use Mtk3d\Scout\Fts5\Support\Fts5Schema;
+use Mtk3d\Scout\Fts5\Support\MatchQuery;
+use Mtk3d\Scout\Fts5\Support\SearchPass;
+use Mtk3d\Scout\Fts5\Support\Tokens;
 
 /**
  * Runs searches against an FTS5 index table.

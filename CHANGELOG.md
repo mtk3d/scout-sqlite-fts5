@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to `wrenchr/scout-sqlite-fts5` are documented here.
+All notable changes to `mtk3d/scout-sqlite-fts5` are documented here.
 
 ## v0.1.0 - unreleased
 

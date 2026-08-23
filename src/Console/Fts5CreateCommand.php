@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Wrenchr\Scout\Fts5\Console;
+namespace Mtk3d\Scout\Fts5\Console;
 
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Model;
+use Mtk3d\Scout\Fts5\Console\Concerns\ResolvesSearchableModels;
+use Mtk3d\Scout\Fts5\Support\Fts5Schema;
 use Symfony\Component\Console\Attribute\AsCommand;
-use Wrenchr\Scout\Fts5\Console\Concerns\ResolvesSearchableModels;
-use Wrenchr\Scout\Fts5\Support\Fts5Schema;
 
 #[AsCommand(name: 'scout:fts5-create')]
 class Fts5CreateCommand extends Command

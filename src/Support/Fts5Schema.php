@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Wrenchr\Scout\Fts5\Support;
+namespace Mtk3d\Scout\Fts5\Support;
 
 use Illuminate\Database\ConnectionInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Wrenchr\Scout\Fts5\Exceptions\ScoutFts5Exception;
-use Wrenchr\Scout\Fts5\SearchConfiguration;
+use Mtk3d\Scout\Fts5\Exceptions\ScoutFts5Exception;
+use Mtk3d\Scout\Fts5\SearchConfiguration;
 
 /**
  * Owns everything about the shape of an FTS5 index table.

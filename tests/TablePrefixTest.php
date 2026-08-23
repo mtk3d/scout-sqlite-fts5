@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Wrenchr\Scout\Fts5\Tests;
+namespace Mtk3d\Scout\Fts5\Tests;
 
+use Mtk3d\Scout\Fts5\Support\Fts5Schema;
+use Mtk3d\Scout\Fts5\Tests\Stubs\Customer;
 use PHPUnit\Framework\Attributes\Test;
-use Wrenchr\Scout\Fts5\Support\Fts5Schema;
-use Wrenchr\Scout\Fts5\Tests\Stubs\Customer;
 
 /**
  * The query builder applies the connection's table prefix on its own, while
