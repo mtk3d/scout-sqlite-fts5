@@ -4,8 +4,11 @@
 
 Why this package works the way it does. Each record states the problem as it stood, what was chosen, and what that choice costs — the last part being the one worth reading before you file a bug about it.
 
+[Record 0](0000-cheap-simple-indexing-for-scout-on-sqlite.md) is the one the package exists to serve; the rest are choices made underneath it.
+
 | # | Decision | Costs you |
 |---|---|---|
+| [0](0000-cheap-simple-indexing-for-scout-on-sqlite.md) | **Why this exists:** cheap, simple indexing for Scout on SQLite | Narrow scope by design |
 | [1](0001-sqlite-fts5-over-a-portable-index.md) | Build on SQLite FTS5 rather than a portable index | Runs on SQLite only |
 | [2](0002-tables-derived-from-models.md) | Derive index tables from models, not migrations | Schema changes need a rebuild |
 | [3](0003-integer-keys-in-rowid.md) | Store integer keys in `rowid` | String-keyed models scan on write |

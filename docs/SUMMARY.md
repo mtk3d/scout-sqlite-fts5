@@ -15,6 +15,7 @@
 
 - [Architecture](architecture.md)
 - [Decisions](decisions/index.md)
+  - [0. Cheap, simple indexing for Scout on SQLite](decisions/0000-cheap-simple-indexing-for-scout-on-sqlite.md)
   - [1. SQLite FTS5 over a portable index](decisions/0001-sqlite-fts5-over-a-portable-index.md)
   - [2. Tables derived from models](decisions/0002-tables-derived-from-models.md)
   - [3. Integer keys in rowid](decisions/0003-integer-keys-in-rowid.md)
