@@ -2,6 +2,7 @@
 
 [![Tests](https://github.com/mtk3d/scout-sqlite-fts5/actions/workflows/tests.yml/badge.svg)](https://github.com/mtk3d/scout-sqlite-fts5/actions/workflows/tests.yml)
 [![Latest version](https://img.shields.io/packagist/v/mtk3d/scout-sqlite-fts5.svg)](https://packagist.org/packages/mtk3d/scout-sqlite-fts5)
+[![PHP](https://img.shields.io/badge/php-8.3%20%7C%208.4-777bb4.svg)](https://www.php.net/supported-versions.php)
 [![License](https://img.shields.io/github/license/mtk3d/scout-sqlite-fts5.svg)](LICENSE.md)
 [![Documentation](https://github.com/mtk3d/scout-sqlite-fts5/actions/workflows/docs.yml/badge.svg)](https://mtk3d.github.io/scout-sqlite-fts5/)
 
