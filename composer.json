@@ -1,0 +1,54 @@
+{
+    "name": "wrenchr/scout-sqlite-fts5",
+    "description": "A Laravel Scout driver that indexes your models in SQLite FTS5 virtual tables, with BM25 ranking and a typo-tolerant multi-pass search cascade.",
+    "keywords": ["laravel", "scout", "search", "sqlite", "fts5", "full-text-search", "bm25", "fuzzy-search"],
+    "homepage": "https://github.com/wrenchr/scout-sqlite-fts5",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Mateusz Cholewka",
+            "email": "kontaktmtk3d@gmail.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^8.3",
+        "ext-pdo": "*",
+        "illuminate/console": "^12.0|^13.0",
+        "illuminate/database": "^12.0|^13.0",
+        "illuminate/support": "^12.0|^13.0",
+        "laravel/scout": "^11.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^10.0|^11.0",
+        "phpunit/phpunit": "^12.0",
+        "laravel/pint": "^1.18"
+    },
+    "autoload": {
+        "psr-4": {
+            "Wrenchr\\Scout\\Fts5\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Wrenchr\\Scout\\Fts5\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit",
+        "lint": "vendor/bin/pint --test",
+        "fix": "vendor/bin/pint"
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Wrenchr\\Scout\\Fts5\\Fts5ServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}
