@@ -2,8 +2,8 @@
 
 [![Tests](https://github.com/mtk3d/scout-sqlite-fts5/actions/workflows/tests.yml/badge.svg)](https://github.com/mtk3d/scout-sqlite-fts5/actions/workflows/tests.yml)
 [![Latest version](https://img.shields.io/packagist/v/mtk3d/scout-sqlite-fts5.svg)](https://packagist.org/packages/mtk3d/scout-sqlite-fts5)
-[![License](https://img.shields.io/packagist/l/mtk3d/scout-sqlite-fts5.svg)](LICENSE.md)
-[![Documentation](https://img.shields.io/badge/docs-mdBook-blue.svg)](https://mtk3d.github.io/scout-sqlite-fts5/)
+[![License](https://img.shields.io/github/license/mtk3d/scout-sqlite-fts5.svg)](LICENSE.md)
+[![Documentation](https://img.shields.io/badge/docs-online-blue.svg)](https://mtk3d.github.io/scout-sqlite-fts5/)
 
 A [Laravel Scout](https://laravel.com/docs/scout) driver that keeps your search index in SQLite's own full-text engine — [FTS5](https://www.sqlite.org/fts5.html) — right next to your data.
 
@@ -165,7 +165,7 @@ Turning off `any` keeps multi-word queries strict; turning off `trigram` means s
 
 ## Documentation
 
-The full documentation is published at **[mtk3d.github.io/scout-sqlite-fts5](https://mtk3d.github.io/scout-sqlite-fts5/)**, and the same pages live in [`docs/`](docs) in this repository.
+The full documentation is published at **[mtk3d.github.io/scout-sqlite-fts5](https://mtk3d.github.io/scout-sqlite-fts5/)**, built with [mdBook](https://rust-lang.github.io/mdBook/) from the same pages that live in [`docs/`](docs) in this repository.
 
 - [How it works](docs/how-it-works.md) — the search cascade, ranking, and what the index actually looks like
 - [Filtering and ordering](docs/filtering-and-ordering.md) — filters, sorting, pagination, soft deletes, string keys
