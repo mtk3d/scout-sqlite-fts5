@@ -73,6 +73,30 @@ class EdgeCaseTest extends TestCase
         $this->assertSame(1, $result->total());
     }
 
+    public function testItApproximatesSuffixStrippingForInflectedLanguages(): void
+    {
+        // There is no stemmer. The typo pass shortens a word and matches it as
+        // a prefix, which lands close to suffix stripping for languages that
+        // inflect the ending — by accident rather than by design.
+        Customer::create(['name' => 'Serwis', 'notes' => 'Wymiana rozrządu']);
+
+        foreach (['wymiana', 'wymiany', 'wymianę', 'wymianie', 'rozrząd', 'rozrządem'] as $form) {
+            $this->assertSame(1, Customer::search($form)->raw()->total(), "nie znalazł formy: {$form}");
+        }
+    }
+
+    public function testTheCascadeCanReachUnrelatedWordsThatLookAlike(): void
+    {
+        // The other side of the same coin. Nothing here knows what a root is:
+        // "kowalski" and "kowalczyk" share three of six substrings, which
+        // clears the threshold, so a search for one reaches the other. A
+        // stemmer would keep them apart; the cascade only knows characters.
+        Customer::create(['name' => 'Kowalczyk']);
+
+        $this->assertSame('trigram', Customer::search('kowalski')->raw()->pass());
+        $this->assertSame(1, Customer::search('kowalski')->raw()->total());
+    }
+
     public function testItMatchesAlphabetsThatAreNeitherLatinNorCjk(): void
     {
         Customer::create(['name' => 'Ковальский Ян']);

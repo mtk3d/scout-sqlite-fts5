@@ -95,6 +95,44 @@ The substring pass has no BM25 score to speak of, so its documents are ranked by
 
 The order is decided in SQL and carried through hydration: `search()->get()` returns models in relevance order, not in whatever order the database felt like returning rows.
 
+## No stemmer
+
+FTS5 is the search engine here. It owns the index, the tokenizing and the ranking; this package decides what to put in, what to ask, and in what order to ask it. That division is worth keeping in mind, because it explains what is missing as much as what is there.
+
+What is missing is stemming — reducing inflected forms to a shared root, so that a search for one form finds the others:
+
+```
+biegał, biegnie, biegami  →  bieg
+engineering, engineer     →  engin
+```
+
+Nothing in this package does that. Words go into the index as the tokenizer split them and come out the same way. Search here is string matching over an inverted index, made forgiving by trying several shapes of the same query — not linguistic analysis.
+
+That is a deliberate limit rather than an oversight. A stemmer is per-language, has to be shipped and maintained for each one, and has to agree exactly between indexing and searching or the two stop meeting. Drivers that build their own index carry a dozen of them for this reason.
+
+### What you get instead
+
+FTS5 ships one stemmer, for English, and you can turn it on:
+
+```php
+'tokenizer' => 'porter unicode61 remove_diacritics 2',
+```
+
+For everything else, the `typo` pass turns out to approximate suffix stripping by accident. It shortens each word and matches the remainder as a prefix — and inflection mostly changes endings, so the two land in a similar place. Against an index containing *Wymiana rozrządu*:
+
+| Query | Found by |
+|---|---|
+| `wymiana` | prefix |
+| `wymiany` | typo |
+| `wymianę` | typo |
+| `wymianie` | typo |
+| `rozrządu` | prefix |
+| `rozrządem` | typo |
+
+All six reach the document, with no stemmer and no configuration. Polish is not among the languages Snowball stems, so for a language like this the accident is worth more than the real thing would be.
+
+Do not mistake it for one, though. Shortening is blind where a stemmer knows roots, so words that merely look alike are reached too: searching `kowalski` finds *Kowalczyk*, because they share three of six substrings and that clears the threshold. Both behaviours are pinned in [the edge cases](edge-cases.md).
+
 ## Normalization
 
 Text is normalized on the way into the index and on the way into a query, so the two always agree.

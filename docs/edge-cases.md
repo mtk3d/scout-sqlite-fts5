@@ -38,6 +38,27 @@ With that, `渋谷` matches through the substring pass. The cost is a broader an
 
 The `trigram` tokenizer is the other option and behaves differently from what its name suggests here: it indexes substrings, so mid-word matching works for Latin text, but SQLite requires queries of at least three characters — which puts two-character CJK words out of reach entirely.
 
+### Inflected forms usually match, but not because anything understands them
+
+There is no stemmer — see [how it works](how-it-works.md#no-stemmer). The `typo` pass shortens each word and matches the remainder as a prefix, which happens to land close to suffix stripping:
+
+```php
+Customer::create(['name' => 'Serwis', 'notes' => 'Wymiana rozrządu']);
+
+// all six find it
+foreach (['wymiana', 'wymiany', 'wymianę', 'wymianie', 'rozrząd', 'rozrządem'] as $form) { }
+```
+
+The cost of the same blindness is that lookalikes are reached too:
+
+```php
+Customer::create(['name' => 'Kowalczyk']);
+
+Customer::search('kowalski')->raw()->pass();   // 'trigram' — and it matches
+```
+
+`kowalski` and `kowalczyk` share three of six substrings, which clears the threshold. A stemmer would keep the two roots apart; the cascade only compares characters. Raise `trigram.min_ratio` if this trade is wrong for your data.
+
 ### Alphabets with no ASCII equivalent work normally
 
 Cyrillic, Greek and the rest tokenize like Latin, and prefix matching works:
