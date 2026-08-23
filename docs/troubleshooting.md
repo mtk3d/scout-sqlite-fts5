@@ -38,6 +38,14 @@ A `where()` names a column that is neither in the index nor on the model's table
 
 If the column really should be filterable and lives elsewhere, add it to `toSearchableArray()` as a filter and rebuild. See [filtering](filtering-and-ordering.md#filters).
 
+### Cannot order or filter this search by a column of `[…]`
+
+> Its table lives on connection `[…]` while the index is on `[…]`, and SQLite cannot join across connections.
+
+`scout-fts5.connection` points at a different database from the models. That is a supported arrangement — see [keeping the index in its own file](configuration.md#keeping-the-index-in-its-own-file) — but it limits searches to indexed filter columns and relevance ordering.
+
+Either move the index onto the model's connection, or declare the column in `searchableFilters()` and rebuild. An explicit `orderBy()` cannot be rescued that way; relevance ordering is the only option across connections.
+
 ### The scout-sqlite-fts5 driver requires an SQLite connection
 
 > Point `scout-fts5.connection` at an SQLite connection.

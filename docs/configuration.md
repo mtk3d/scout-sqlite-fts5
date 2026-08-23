@@ -16,9 +16,26 @@ Options marked **rebuild** change the shape or contents of the index, so run `sc
 'connection' => env('SCOUT_FTS5_CONNECTION'), // null = the default connection
 ```
 
-The SQLite connection the index tables live on. It must be the same connection as your models: filters on undeclared columns and every explicit ordering join the model's own table.
+The SQLite connection the index tables live on. `null` uses the application's default, which puts the index in the same file as your data — the usual arrangement, and the one where everything works.
 
 The driver checks the connection's driver at boot and throws if it is not SQLite, rather than failing halfway through a query.
+
+### Keeping the index in its own file
+
+Pointing this at a second SQLite connection puts the whole index in a separate file. That has real appeal: the file can be excluded from backups, deleted and rebuilt without touching application data, and kept out of whatever replicates your database.
+
+Search and filters on indexed columns work exactly as before. What stops working is anything that needs the model's own table, because SQLite cannot join across connections:
+
+```php
+Customer::search('kowalski')->get();                       // works
+Customer::search('kowalski')->where('tenant_id', 1)->get(); // works — indexed filter
+Customer::search('kowalski')->latest()->get();              // throws
+Customer::search('kowalski')->where('status', 1)->get();    // throws — not an indexed filter
+```
+
+The driver detects the mismatch and says so, rather than letting SQLite report a table it was never going to find.
+
+Take this arrangement if you sort by relevance and declare every column you filter on in `searchableFilters()`. Otherwise leave the index where your data is.
 
 ## `suffix` — rebuild
 

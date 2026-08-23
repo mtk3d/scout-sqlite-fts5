@@ -32,6 +32,16 @@ class ScoutFts5Exception extends RuntimeException
         );
     }
 
+    public static function crossConnection(string $model, string $indexConnection, string $modelConnection): self
+    {
+        return new self(
+            "Cannot order or filter this search by a column of [{$model}]: its table lives on connection "
+            ."[{$modelConnection}] while the index is on [{$indexConnection}], and SQLite cannot join across "
+            .'connections. Either put the index on the model\'s connection, or restrict the search to indexed '
+            .'filter columns and relevance ordering.'
+        );
+    }
+
     public static function unknownFilter(string $field, string $model, array $available): self
     {
         $known = $available === [] ? 'none' : implode(', ', $available);

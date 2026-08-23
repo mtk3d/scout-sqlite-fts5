@@ -173,7 +173,7 @@ The full documentation is published at **[mtk3d.github.io/scout-sqlite-fts5](htt
 
 - **Simplified search, not linguistic analysis.** FTS5 is the engine; this package chooses what to index and which queries to try. There is no stemmer — matching is over strings, made forgiving by the cascade. [What that costs and what covers for it →](docs/how-it-works.md#no-stemmer)
 - **SQLite only.** The driver refuses to boot on any other connection rather than failing halfway through a query.
-- **The index must share a connection with your models**, since filters and ordering join their table.
+- **The index lives in your existing database.** The tables are created on the connection Laravel is already configured with, alongside your own — there is no second database to provision. ([It can be given a file of its own](docs/configuration.md#keeping-the-index-in-its-own-file), at the cost of sorting and unindexed filters.)
 - **The `trigram` pass scans.** It is last for that reason, and only runs when everything else came back empty.
 - **FTS5 tables cannot be altered.** Adding a filter column means a rebuild; the driver detects the mismatch and says so instead of failing on an insert.
 

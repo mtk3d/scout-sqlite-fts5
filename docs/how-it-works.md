@@ -4,7 +4,7 @@
 
 ## The index
 
-Every searchable model gets one FTS5 virtual table, named after its `searchableAs()` value plus the configured suffix — `customers` becomes `customers_fts`.
+Every searchable model gets one FTS5 virtual table, named after its `searchableAs()` value plus the configured suffix — `customers` becomes `customers_fts`. It is created in your existing database, on the connection Laravel is already configured with, next to the table it indexes.
 
 ```sql
 CREATE VIRTUAL TABLE "customers_fts" USING fts5(

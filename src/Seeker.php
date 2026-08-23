@@ -182,6 +182,17 @@ class Seeker
 
         $model = $builder->model;
 
+        // The index may live in a database of its own, which works right up
+        // until a query needs the model's table. SQLite cannot join across
+        // connections, so say so rather than letting SQLite report a missing
+        // table it was never going to find.
+        $indexConnection = $this->connection->getName();
+        $modelConnection = $model->getConnection()->getName();
+
+        if ($indexConnection !== $modelConnection) {
+            throw ScoutFts5Exception::crossConnection($model::class, $indexConnection, $modelConnection);
+        }
+
         $query->join(
             $model->getTable().' as '.self::MODEL_ALIAS,
             self::MODEL_ALIAS.'.'.$model->getScoutKeyName(),
@@ -297,7 +308,7 @@ class Seeker
      */
     private function columnsOf(Model $model): array
     {
-        return $this->modelColumns[$model->getTable()] ??= $this->connection
+        return $this->modelColumns[$model->getTable()] ??= $model->getConnection()
             ->getSchemaBuilder()
             ->getColumnListing($model->getTable());
     }

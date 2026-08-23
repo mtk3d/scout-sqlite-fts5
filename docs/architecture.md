@@ -37,8 +37,10 @@ C4Container
         Container(driver, "scout-sqlite-fts5", "PHP", "Turns Scout's calls into SQL")
     }
 
-    ContainerDb(tables, "Model tables", "SQLite", "customers, orders, invoices")
-    ContainerDb(fts, "FTS5 virtual tables", "SQLite", "customers_fts, orders_fts, invoices_fts")
+    Container_Boundary(file, "One SQLite database file — your app's usual connection") {
+        ContainerDb(tables, "Model tables", "SQLite", "customers, orders, invoices")
+        ContainerDb(fts, "FTS5 index tables", "SQLite", "customers_fts, orders_fts, invoices_fts")
+    }
 
     Rel(user, models, "Model::search()")
     Rel(models, scout, "Saves and deletes raise events")
@@ -48,9 +50,11 @@ C4Container
     Rel(scout, tables, "Hydrates the models that matched")
 ```
 
-Two arrows in that diagram carry most of the design.
+The two stores in that diagram are **one database**. There is no second file, no second connection and nothing to provision: the index tables are created next to your own, on the connection Laravel is already configured with, and they are backed up, replicated and opened along with everything else. They are drawn apart only because one holds your data and the other holds the index over it.
 
-The first is `driver → tables`. The index is not a separate world: it lives in the same file as the data, which is why the driver can join the model's own table to answer a filter on a column that was never indexed, or to sort by one. An engine talking to a remote service cannot do that — it would have to either refuse the query or fetch everything and sort in PHP.
+Two arrows carry most of the design.
+
+The first is `driver → tables`. The index is not a separate world: by default it lives in the same file as the data, which is why the driver can join the model's own table to answer a filter on a column that was never indexed, or to sort by one. Move the index to its own connection and that arrow disappears, taking those two abilities with it. An engine talking to a remote service cannot do that — it would have to either refuse the query or fetch everything and sort in PHP.
 
 The second is `scout → tables`. The driver returns keys, not models. Hydration is Scout's job, and it applies whatever constraints the caller attached with `query()`.
 
