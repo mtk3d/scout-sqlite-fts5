@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Mtk3d\Scout\Fts5\Normalizer;
+namespace ScoutFts5\Normalizer;
 
-use Mtk3d\Scout\Fts5\Contracts\Normalizer;
+use ScoutFts5\Contracts\Normalizer;
 
 /**
  * Lowercases text and folds Latin diacritics down to their ASCII base letter.

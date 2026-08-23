@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace Mtk3d\Scout\Fts5;
+namespace ScoutFts5;
 
 use Illuminate\Database\ConnectionInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Database\Query\Expression;
 use Laravel\Scout\Builder;
-use Mtk3d\Scout\Fts5\Contracts\Normalizer;
-use Mtk3d\Scout\Fts5\Exceptions\ScoutFts5Exception;
-use Mtk3d\Scout\Fts5\Support\Fts5Schema;
-use Mtk3d\Scout\Fts5\Support\MatchQuery;
-use Mtk3d\Scout\Fts5\Support\SearchPass;
-use Mtk3d\Scout\Fts5\Support\Tokens;
+use ScoutFts5\Contracts\Normalizer;
+use ScoutFts5\Exceptions\ScoutFts5Exception;
+use ScoutFts5\Support\MatchQuery;
+use ScoutFts5\Support\Schema;
+use ScoutFts5\Support\SearchPass;
+use ScoutFts5\Support\Tokens;
 
 /**
  * Runs searches against an FTS5 index table.
@@ -24,7 +24,7 @@ use Mtk3d\Scout\Fts5\Support\Tokens;
  * of keys that comes back is the page the caller asked for rather than a slice
  * of an arbitrary order.
  */
-class Fts5Seeker
+class Seeker
 {
     /**
      * The alias the model's own table is joined under when a search needs
@@ -41,7 +41,7 @@ class Fts5Seeker
 
     public function __construct(
         private ConnectionInterface $connection,
-        private Fts5Schema $schema,
+        private Schema $schema,
         private Normalizer $normalizer,
         private SearchConfiguration $configuration,
     ) {}

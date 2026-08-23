@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Mtk3d\Scout\Fts5\Tests;
+namespace ScoutFts5\Tests;
 
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use Laravel\Scout\ScoutServiceProvider;
-use Mtk3d\Scout\Fts5\Fts5ServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
+use ScoutFts5\ServiceProvider;
 
 abstract class TestCase extends Orchestra
 {
@@ -16,7 +16,7 @@ abstract class TestCase extends Orchestra
     {
         return [
             ScoutServiceProvider::class,
-            Fts5ServiceProvider::class,
+            ServiceProvider::class,
         ];
     }
 

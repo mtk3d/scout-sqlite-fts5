@@ -74,7 +74,7 @@ Write your own by implementing the contract:
 ```php
 namespace App\Search;
 
-use Mtk3d\Scout\Fts5\Contracts\Normalizer;
+use ScoutFts5\Contracts\Normalizer;
 
 class StreetNormalizer implements Normalizer
 {
@@ -91,7 +91,7 @@ Point the config at it, or bind the contract if it needs dependencies:
 $this->app->bind(Normalizer::class, StreetNormalizer::class);
 ```
 
-Every other service is resolved from the container too — `Fts5Indexer`, `Fts5Seeker`, `Fts5Schema` and `Fts5Engine` can all be swapped the same way.
+Every other service is resolved from the container too — `ScoutFts5\Indexer`, `ScoutFts5\Seeker`, `ScoutFts5\Support\Schema` and `ScoutFts5\Engine` can all be swapped the same way.
 
 ## `passes`
 

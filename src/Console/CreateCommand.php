@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Mtk3d\Scout\Fts5\Console;
+namespace ScoutFts5\Console;
 
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Model;
-use Mtk3d\Scout\Fts5\Console\Concerns\ResolvesSearchableModels;
-use Mtk3d\Scout\Fts5\Support\Fts5Schema;
+use ScoutFts5\Console\Concerns\ResolvesSearchableModels;
+use ScoutFts5\Support\Schema;
 use Symfony\Component\Console\Attribute\AsCommand;
 
 #[AsCommand(name: 'scout:fts5-create')]
-class Fts5CreateCommand extends Command
+class CreateCommand extends Command
 {
     use ResolvesSearchableModels;
 
@@ -21,7 +21,7 @@ class Fts5CreateCommand extends Command
 
     protected $description = 'Create the FTS5 index tables of your searchable models';
 
-    public function handle(Fts5Schema $schema): int
+    public function handle(Schema $schema): int
     {
         foreach ($this->searchableModels() as $model) {
             $table = $schema->tableFor($model);
@@ -46,7 +46,7 @@ class Fts5CreateCommand extends Command
      * Reports on a table that was already there, pointing out the case where
      * its columns no longer match what the model declares.
      */
-    private function reportExisting(Fts5Schema $schema, Model $model, string $table): void
+    private function reportExisting(Schema $schema, Model $model, string $table): void
     {
         if ($schema->matchesModel($model)) {
             $this->components->twoColumnDetail($table, '<fg=gray>already exists</>');

@@ -35,12 +35,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Mtk3d\\Scout\\Fts5\\": "src/"
+            "ScoutFts5\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Mtk3d\\Scout\\Fts5\\Tests\\": "tests/"
+            "ScoutFts5\\Tests\\": "tests/"
         }
     },
     "scripts": {
@@ -54,7 +54,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Mtk3d\\Scout\\Fts5\\Fts5ServiceProvider"
+                "ScoutFts5\\ServiceProvider"
             ]
         }
     },

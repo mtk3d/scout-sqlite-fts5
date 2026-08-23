@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Mtk3d\Scout\Fts5\Exceptions;
+namespace ScoutFts5\Exceptions;
 
 use RuntimeException;
 

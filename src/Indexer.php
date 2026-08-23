@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Mtk3d\Scout\Fts5;
+namespace ScoutFts5;
 
 use Illuminate\Database\ConnectionInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
-use Mtk3d\Scout\Fts5\Contracts\Normalizer;
-use Mtk3d\Scout\Fts5\Exceptions\ScoutFts5Exception;
-use Mtk3d\Scout\Fts5\Support\Fts5Schema;
+use ScoutFts5\Contracts\Normalizer;
+use ScoutFts5\Exceptions\ScoutFts5Exception;
+use ScoutFts5\Support\Schema;
 use Throwable;
 
 /**
@@ -21,7 +21,7 @@ use Throwable;
  * returned from `searchableFilters()` are stored alongside it in unindexed
  * columns, where they can be filtered on without being searched.
  */
-class Fts5Indexer
+class Indexer
 {
     /**
      * How many rows are written per insert statement.
@@ -30,7 +30,7 @@ class Fts5Indexer
 
     public function __construct(
         private ConnectionInterface $connection,
-        private Fts5Schema $schema,
+        private Schema $schema,
         private Normalizer $normalizer,
         private SearchConfiguration $configuration,
     ) {}
@@ -141,7 +141,7 @@ class Fts5Indexer
 
             $row = [
                 $keyColumn => $this->documentKey($model),
-                Fts5Schema::CONTENT_COLUMN => $this->contentFor($searchable),
+                Schema::CONTENT_COLUMN => $this->contentFor($searchable),
             ];
 
             $filters = $this->filtersFor($model);
@@ -221,7 +221,7 @@ class Fts5Indexer
         if ($this->schema->modelUsesSoftDeletes($model)) {
             $metadata = method_exists($model, 'scoutMetadata') ? $model->scoutMetadata() : [];
 
-            $filters[Fts5Schema::SOFT_DELETE_COLUMN] = $metadata[Fts5Schema::SOFT_DELETE_COLUMN]
+            $filters[Schema::SOFT_DELETE_COLUMN] = $metadata[Schema::SOFT_DELETE_COLUMN]
                 ?? (method_exists($model, 'trashed') && $model->trashed() ? 1 : 0);
         }
 

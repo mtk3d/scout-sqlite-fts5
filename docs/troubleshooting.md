@@ -4,7 +4,7 @@
 
 ## Errors this package throws
 
-Every one of them is a `Mtk3d\Scout\Fts5\Exceptions\ScoutFts5Exception`.
+Every one of them is a `ScoutFts5\Exceptions\ScoutFts5Exception`.
 
 ### The FTS5 index table `[…]` does not exist
 

@@ -2,29 +2,29 @@
 
 declare(strict_types=1);
 
-namespace Mtk3d\Scout\Fts5;
+namespace ScoutFts5;
 
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Database\ConnectionInterface;
 use Illuminate\Database\DatabaseManager;
-use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 use Laravel\Scout\EngineManager;
-use Mtk3d\Scout\Fts5\Console\Fts5CreateCommand;
-use Mtk3d\Scout\Fts5\Console\Fts5DropCommand;
-use Mtk3d\Scout\Fts5\Console\Fts5OptimizeCommand;
-use Mtk3d\Scout\Fts5\Console\Fts5RebuildCommand;
-use Mtk3d\Scout\Fts5\Contracts\Normalizer;
-use Mtk3d\Scout\Fts5\Exceptions\ScoutFts5Exception;
-use Mtk3d\Scout\Fts5\Support\Fts5Schema;
+use ScoutFts5\Console\CreateCommand;
+use ScoutFts5\Console\DropCommand;
+use ScoutFts5\Console\OptimizeCommand;
+use ScoutFts5\Console\RebuildCommand;
+use ScoutFts5\Contracts\Normalizer;
+use ScoutFts5\Exceptions\ScoutFts5Exception;
+use ScoutFts5\Support\Schema;
 
 /**
  * Registers the `sqlite-fts5` Scout driver and everything it is built from.
  *
  * Every service is bound so it can be swapped out: bind your own
  * {@see Normalizer} to change how text is folded, or your own
- * {@see Fts5Seeker} to change how the search cascade behaves.
+ * {@see Seeker} to change how the search cascade behaves.
  */
-class Fts5ServiceProvider extends ServiceProvider
+class ServiceProvider extends BaseServiceProvider
 {
     /**
      * The name the driver is registered under, plus a shorter alias.
@@ -50,29 +50,29 @@ class Fts5ServiceProvider extends ServiceProvider
             return $app->make($normalizer);
         });
 
-        $this->app->bind(Fts5Schema::class, fn (Container $app) => new Fts5Schema(
+        $this->app->bind(Schema::class, fn (Container $app) => new Schema(
             $this->connection($app),
             $app->make(SearchConfiguration::class),
         ));
 
-        $this->app->bind(Fts5Indexer::class, fn (Container $app) => new Fts5Indexer(
+        $this->app->bind(Indexer::class, fn (Container $app) => new Indexer(
             $this->connection($app),
-            $app->make(Fts5Schema::class),
+            $app->make(Schema::class),
             $app->make(Normalizer::class),
             $app->make(SearchConfiguration::class),
         ));
 
-        $this->app->bind(Fts5Seeker::class, fn (Container $app) => new Fts5Seeker(
+        $this->app->bind(Seeker::class, fn (Container $app) => new Seeker(
             $this->connection($app),
-            $app->make(Fts5Schema::class),
+            $app->make(Schema::class),
             $app->make(Normalizer::class),
             $app->make(SearchConfiguration::class),
         ));
 
-        $this->app->bind(Fts5Engine::class, fn (Container $app) => new Fts5Engine(
-            $app->make(Fts5Indexer::class),
-            $app->make(Fts5Seeker::class),
-            $app->make(Fts5Schema::class),
+        $this->app->bind(Engine::class, fn (Container $app) => new Engine(
+            $app->make(Indexer::class),
+            $app->make(Seeker::class),
+            $app->make(Schema::class),
         ));
     }
 
@@ -87,14 +87,14 @@ class Fts5ServiceProvider extends ServiceProvider
             ], ['config', 'scout-fts5-config']);
 
             $this->commands([
-                Fts5CreateCommand::class,
-                Fts5DropCommand::class,
-                Fts5OptimizeCommand::class,
-                Fts5RebuildCommand::class,
+                CreateCommand::class,
+                DropCommand::class,
+                OptimizeCommand::class,
+                RebuildCommand::class,
             ]);
         }
 
-        $engine = fn (Container $app) => $app->make(Fts5Engine::class);
+        $engine = fn (Container $app) => $app->make(Engine::class);
 
         $this->app->make(EngineManager::class)
             ->extend(self::DRIVER, $engine)

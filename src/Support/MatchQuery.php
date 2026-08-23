@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Mtk3d\Scout\Fts5\Support;
+namespace ScoutFts5\Support;
 
 /**
  * Builds FTS5 `MATCH` expressions out of user input.

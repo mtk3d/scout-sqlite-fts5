@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Mtk3d\Scout\Fts5;
+namespace ScoutFts5;
 
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\LazyCollection;
 use Laravel\Scout\Builder;
-use Laravel\Scout\Engines\Engine;
-use Mtk3d\Scout\Fts5\Support\Fts5Schema;
+use Laravel\Scout\Engines\Engine as ScoutEngine;
+use ScoutFts5\Support\Schema;
 
 /**
  * A Laravel Scout engine backed by SQLite's FTS5 full-text index.
@@ -19,12 +19,12 @@ use Mtk3d\Scout\Fts5\Support\Fts5Schema;
  * virtual table per searchable model. Nothing else has to run: no daemon, no
  * API key, no separate schema to keep in sync.
  */
-class Fts5Engine extends Engine
+class Engine extends ScoutEngine
 {
     public function __construct(
-        private Fts5Indexer $indexer,
-        private Fts5Seeker $seeker,
-        private Fts5Schema $schema,
+        private Indexer $indexer,
+        private Seeker $seeker,
+        private Schema $schema,
     ) {}
 
     /**

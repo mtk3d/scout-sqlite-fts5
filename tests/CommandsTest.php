@@ -2,42 +2,42 @@
 
 declare(strict_types=1);
 
-namespace Mtk3d\Scout\Fts5\Tests;
+namespace ScoutFts5\Tests;
 
-use Mtk3d\Scout\Fts5\Console\Concerns\ResolvesSearchableModels;
-use Mtk3d\Scout\Fts5\Console\Fts5CreateCommand;
-use Mtk3d\Scout\Fts5\Console\Fts5DropCommand;
-use Mtk3d\Scout\Fts5\Console\Fts5OptimizeCommand;
-use Mtk3d\Scout\Fts5\Console\Fts5RebuildCommand;
-use Mtk3d\Scout\Fts5\Fts5Engine;
-use Mtk3d\Scout\Fts5\Fts5Indexer;
-use Mtk3d\Scout\Fts5\Fts5Seeker;
-use Mtk3d\Scout\Fts5\Fts5ServiceProvider;
-use Mtk3d\Scout\Fts5\Normalizer\DiacriticsNormalizer;
-use Mtk3d\Scout\Fts5\SearchConfiguration;
-use Mtk3d\Scout\Fts5\SearchResult;
-use Mtk3d\Scout\Fts5\Support\Fts5Schema;
-use Mtk3d\Scout\Fts5\Support\MatchQuery;
-use Mtk3d\Scout\Fts5\Support\SearchPass;
-use Mtk3d\Scout\Fts5\Support\Tokens;
-use Mtk3d\Scout\Fts5\Tests\Stubs\Article;
-use Mtk3d\Scout\Fts5\Tests\Stubs\Customer;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\CoversTrait;
 use PHPUnit\Framework\Attributes\UsesClass;
+use ScoutFts5\Console\Concerns\ResolvesSearchableModels;
+use ScoutFts5\Console\CreateCommand;
+use ScoutFts5\Console\DropCommand;
+use ScoutFts5\Console\OptimizeCommand;
+use ScoutFts5\Console\RebuildCommand;
+use ScoutFts5\Engine;
+use ScoutFts5\Indexer;
+use ScoutFts5\Normalizer\DiacriticsNormalizer;
+use ScoutFts5\SearchConfiguration;
+use ScoutFts5\SearchResult;
+use ScoutFts5\Seeker;
+use ScoutFts5\ServiceProvider;
+use ScoutFts5\Support\MatchQuery;
+use ScoutFts5\Support\Schema;
+use ScoutFts5\Support\SearchPass;
+use ScoutFts5\Support\Tokens;
+use ScoutFts5\Tests\Stubs\Article;
+use ScoutFts5\Tests\Stubs\Customer;
 
-#[CoversClass(Fts5CreateCommand::class)]
-#[CoversClass(Fts5DropCommand::class)]
-#[CoversClass(Fts5OptimizeCommand::class)]
-#[CoversClass(Fts5RebuildCommand::class)]
+#[CoversClass(CreateCommand::class)]
+#[CoversClass(DropCommand::class)]
+#[CoversClass(OptimizeCommand::class)]
+#[CoversClass(RebuildCommand::class)]
 #[CoversTrait(ResolvesSearchableModels::class)]
-#[UsesClass(Fts5Engine::class)]
-#[UsesClass(Fts5Indexer::class)]
-#[UsesClass(Fts5Seeker::class)]
-#[UsesClass(Fts5ServiceProvider::class)]
+#[UsesClass(Engine::class)]
+#[UsesClass(Indexer::class)]
+#[UsesClass(Seeker::class)]
+#[UsesClass(ServiceProvider::class)]
 #[UsesClass(SearchConfiguration::class)]
 #[UsesClass(SearchResult::class)]
-#[UsesClass(Fts5Schema::class)]
+#[UsesClass(Schema::class)]
 #[UsesClass(MatchQuery::class)]
 #[UsesClass(SearchPass::class)]
 #[UsesClass(Tokens::class)]
@@ -134,9 +134,9 @@ class CommandsTest extends TestCase
             ->assertSuccessful();
     }
 
-    private function schema(): Fts5Schema
+    private function schema(): Schema
     {
-        return $this->app->make(Fts5Schema::class);
+        return $this->app->make(Schema::class);
     }
 
     private function rowsIn(string $table): int

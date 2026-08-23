@@ -2,31 +2,31 @@
 
 declare(strict_types=1);
 
-namespace Mtk3d\Scout\Fts5\Tests;
+namespace ScoutFts5\Tests;
 
-use Mtk3d\Scout\Fts5\Fts5Engine;
-use Mtk3d\Scout\Fts5\Fts5Indexer;
-use Mtk3d\Scout\Fts5\Fts5Seeker;
-use Mtk3d\Scout\Fts5\Fts5ServiceProvider;
-use Mtk3d\Scout\Fts5\Normalizer\DiacriticsNormalizer;
-use Mtk3d\Scout\Fts5\SearchConfiguration;
-use Mtk3d\Scout\Fts5\SearchResult;
-use Mtk3d\Scout\Fts5\Support\Fts5Schema;
-use Mtk3d\Scout\Fts5\Support\MatchQuery;
-use Mtk3d\Scout\Fts5\Support\SearchPass;
-use Mtk3d\Scout\Fts5\Support\Tokens;
-use Mtk3d\Scout\Fts5\Tests\Stubs\Article;
-use Mtk3d\Scout\Fts5\Tests\Stubs\Customer;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
+use ScoutFts5\Engine;
+use ScoutFts5\Indexer;
+use ScoutFts5\Normalizer\DiacriticsNormalizer;
+use ScoutFts5\SearchConfiguration;
+use ScoutFts5\SearchResult;
+use ScoutFts5\Seeker;
+use ScoutFts5\ServiceProvider;
+use ScoutFts5\Support\MatchQuery;
+use ScoutFts5\Support\Schema;
+use ScoutFts5\Support\SearchPass;
+use ScoutFts5\Support\Tokens;
+use ScoutFts5\Tests\Stubs\Article;
+use ScoutFts5\Tests\Stubs\Customer;
 
-#[CoversClass(Fts5Seeker::class)]
-#[UsesClass(Fts5Engine::class)]
-#[UsesClass(Fts5Indexer::class)]
-#[UsesClass(Fts5ServiceProvider::class)]
+#[CoversClass(Seeker::class)]
+#[UsesClass(Engine::class)]
+#[UsesClass(Indexer::class)]
+#[UsesClass(ServiceProvider::class)]
 #[UsesClass(SearchConfiguration::class)]
 #[UsesClass(SearchResult::class)]
-#[UsesClass(Fts5Schema::class)]
+#[UsesClass(Schema::class)]
 #[UsesClass(MatchQuery::class)]
 #[UsesClass(SearchPass::class)]
 #[UsesClass(Tokens::class)]

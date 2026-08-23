@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Mtk3d\Scout\Fts5\Console;
+namespace ScoutFts5\Console;
 
 use Illuminate\Console\Command;
-use Mtk3d\Scout\Fts5\Console\Concerns\ResolvesSearchableModels;
-use Mtk3d\Scout\Fts5\Support\Fts5Schema;
+use ScoutFts5\Console\Concerns\ResolvesSearchableModels;
+use ScoutFts5\Support\Schema;
 use Symfony\Component\Console\Attribute\AsCommand;
 
 #[AsCommand(name: 'scout:fts5-rebuild')]
-class Fts5RebuildCommand extends Command
+class RebuildCommand extends Command
 {
     use ResolvesSearchableModels;
 
@@ -20,7 +20,7 @@ class Fts5RebuildCommand extends Command
 
     protected $description = 'Drop, recreate and repopulate the FTS5 index tables of your searchable models';
 
-    public function handle(Fts5Schema $schema): int
+    public function handle(Schema $schema): int
     {
         foreach ($this->searchableModels() as $model) {
             $table = $schema->tableFor($model);

@@ -2,34 +2,34 @@
 
 declare(strict_types=1);
 
-namespace Mtk3d\Scout\Fts5\Tests;
+namespace ScoutFts5\Tests;
 
 use Illuminate\Database\ConnectionInterface;
 use Illuminate\Support\Collection;
-use Mtk3d\Scout\Fts5\Exceptions\ScoutFts5Exception;
-use Mtk3d\Scout\Fts5\Fts5Engine;
-use Mtk3d\Scout\Fts5\Fts5Indexer;
-use Mtk3d\Scout\Fts5\Fts5ServiceProvider;
-use Mtk3d\Scout\Fts5\Normalizer\DiacriticsNormalizer;
-use Mtk3d\Scout\Fts5\SearchConfiguration;
-use Mtk3d\Scout\Fts5\Support\Fts5Schema;
-use Mtk3d\Scout\Fts5\Tests\Stubs\Article;
-use Mtk3d\Scout\Fts5\Tests\Stubs\Customer;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
+use ScoutFts5\Engine;
+use ScoutFts5\Exceptions\ScoutFts5Exception;
+use ScoutFts5\Indexer;
+use ScoutFts5\Normalizer\DiacriticsNormalizer;
+use ScoutFts5\SearchConfiguration;
+use ScoutFts5\ServiceProvider;
+use ScoutFts5\Support\Schema;
+use ScoutFts5\Tests\Stubs\Article;
+use ScoutFts5\Tests\Stubs\Customer;
 
-#[CoversClass(Fts5Indexer::class)]
-#[UsesClass(Fts5Engine::class)]
-#[UsesClass(Fts5ServiceProvider::class)]
+#[CoversClass(Indexer::class)]
+#[UsesClass(Engine::class)]
+#[UsesClass(ServiceProvider::class)]
 #[UsesClass(SearchConfiguration::class)]
-#[UsesClass(Fts5Schema::class)]
+#[UsesClass(Schema::class)]
 #[UsesClass(DiacriticsNormalizer::class)]
 #[UsesClass(ScoutFts5Exception::class)]
 class IndexingTest extends TestCase
 {
     public function testItCreatesTheIndexTableOnFirstWrite(): void
     {
-        $schema = $this->app->make(Fts5Schema::class);
+        $schema = $this->app->make(Schema::class);
 
         $this->assertFalse($schema->exists('customers_fts'));
 
@@ -57,14 +57,14 @@ class IndexingTest extends TestCase
             (int) $this->connection()->table('customers_fts')->selectRaw('rowid as id')->value('id')
         );
 
-        $this->assertNotContains('doc_id', $this->app->make(Fts5Schema::class)->columns('customers_fts'));
+        $this->assertNotContains('doc_id', $this->app->make(Schema::class)->columns('customers_fts'));
     }
 
     public function testItStoresStringKeysInADocumentColumn(): void
     {
         $article = Article::create(['title' => 'Hello']);
 
-        $this->assertContains('doc_id', $this->app->make(Fts5Schema::class)->columns('articles_fts'));
+        $this->assertContains('doc_id', $this->app->make(Schema::class)->columns('articles_fts'));
         $this->assertSame($article->getKey(), $this->indexRows('articles_fts')->first()->doc_id);
     }
 
@@ -124,7 +124,7 @@ class IndexingTest extends TestCase
 
         Customer::removeAllFromSearch();
 
-        $this->assertTrue($this->app->make(Fts5Schema::class)->exists('customers_fts'));
+        $this->assertTrue($this->app->make(Schema::class)->exists('customers_fts'));
         $this->assertCount(0, $this->indexRows('customers_fts'));
     }
 
@@ -142,7 +142,7 @@ class IndexingTest extends TestCase
     {
         // A table created before the model declared its filter columns cannot
         // be altered into shape: FTS5 has no ALTER TABLE.
-        $this->app->make(Fts5Schema::class)->create('customers_fts');
+        $this->app->make(Schema::class)->create('customers_fts');
 
         $this->expectException(ScoutFts5Exception::class);
         $this->expectExceptionMessageMatches('/has to be rebuilt/');

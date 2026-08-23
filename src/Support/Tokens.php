@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Mtk3d\Scout\Fts5\Support;
+namespace ScoutFts5\Support;
 
 /**
  * Splits normalized text into the words and substrings the search passes need.

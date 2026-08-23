@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Mtk3d\Scout\Fts5\Support;
+namespace ScoutFts5\Support;
 
 use Illuminate\Database\ConnectionInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Mtk3d\Scout\Fts5\Exceptions\ScoutFts5Exception;
-use Mtk3d\Scout\Fts5\SearchConfiguration;
+use ScoutFts5\Exceptions\ScoutFts5Exception;
+use ScoutFts5\SearchConfiguration;
 
 /**
  * Owns everything about the shape of an FTS5 index table.
@@ -20,7 +20,7 @@ use Mtk3d\Scout\Fts5\SearchConfiguration;
  * string key (UUID, ULID) get an explicit `doc_id` column instead, and pay a
  * scan on write — FTS5 has nowhere to put a secondary index.
  */
-class Fts5Schema
+class Schema
 {
     /**
      * The column holding the document key for models with a string key.

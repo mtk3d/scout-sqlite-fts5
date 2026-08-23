@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Mtk3d\Scout\Fts5\Tests\Stubs;
+namespace ScoutFts5\Tests\Stubs;
 
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Scout\Searchable;

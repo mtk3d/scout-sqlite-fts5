@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Mtk3d\Scout\Fts5\Support;
+namespace ScoutFts5\Support;
 
 use Closure;
 use Illuminate\Database\Query\Builder as QueryBuilder;
@@ -27,7 +27,7 @@ class SearchPass
      * A pass that hands an expression to the FTS5 query parser and ranks the
      * results with BM25, where a lower score is the better match.
      */
-    public static function match(string $name, string $table, string $expression, Fts5Schema $schema): self
+    public static function match(string $name, string $table, string $expression, Schema $schema): self
     {
         $quoted = $schema->reference($table);
 
@@ -58,10 +58,10 @@ class SearchPass
         string $name,
         string $table,
         array $gramGroups,
-        Fts5Schema $schema,
+        Schema $schema,
         float $ratio = 0.4
     ): self {
-        $content = $schema->reference($table).'.'.$schema->quote(Fts5Schema::CONTENT_COLUMN);
+        $content = $schema->reference($table).'.'.$schema->quote(Schema::CONTENT_COLUMN);
 
         $hit = "(CASE WHEN {$content} LIKE ? THEN 1 ELSE 0 END)";
 

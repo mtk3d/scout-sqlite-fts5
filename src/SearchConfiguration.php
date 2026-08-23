@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Mtk3d\Scout\Fts5;
+namespace ScoutFts5;
 
 /**
  * A typed view over the `scout-fts5` config array.

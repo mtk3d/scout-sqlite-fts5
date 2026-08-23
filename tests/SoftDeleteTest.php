@@ -2,28 +2,28 @@
 
 declare(strict_types=1);
 
-namespace Mtk3d\Scout\Fts5\Tests;
+namespace ScoutFts5\Tests;
 
-use Mtk3d\Scout\Fts5\Fts5Engine;
-use Mtk3d\Scout\Fts5\Fts5Indexer;
-use Mtk3d\Scout\Fts5\Fts5Seeker;
-use Mtk3d\Scout\Fts5\Fts5ServiceProvider;
-use Mtk3d\Scout\Fts5\Normalizer\DiacriticsNormalizer;
-use Mtk3d\Scout\Fts5\SearchConfiguration;
-use Mtk3d\Scout\Fts5\SearchResult;
-use Mtk3d\Scout\Fts5\Support\Fts5Schema;
-use Mtk3d\Scout\Fts5\Support\MatchQuery;
-use Mtk3d\Scout\Fts5\Support\SearchPass;
-use Mtk3d\Scout\Fts5\Support\Tokens;
-use Mtk3d\Scout\Fts5\Tests\Stubs\Post;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
+use ScoutFts5\Engine;
+use ScoutFts5\Indexer;
+use ScoutFts5\Normalizer\DiacriticsNormalizer;
+use ScoutFts5\SearchConfiguration;
+use ScoutFts5\SearchResult;
+use ScoutFts5\Seeker;
+use ScoutFts5\ServiceProvider;
+use ScoutFts5\Support\MatchQuery;
+use ScoutFts5\Support\Schema;
+use ScoutFts5\Support\SearchPass;
+use ScoutFts5\Support\Tokens;
+use ScoutFts5\Tests\Stubs\Post;
 
-#[CoversClass(Fts5Schema::class)]
-#[CoversClass(Fts5Indexer::class)]
-#[UsesClass(Fts5Engine::class)]
-#[UsesClass(Fts5Seeker::class)]
-#[UsesClass(Fts5ServiceProvider::class)]
+#[CoversClass(Schema::class)]
+#[CoversClass(Indexer::class)]
+#[UsesClass(Engine::class)]
+#[UsesClass(Seeker::class)]
+#[UsesClass(ServiceProvider::class)]
 #[UsesClass(SearchConfiguration::class)]
 #[UsesClass(SearchResult::class)]
 #[UsesClass(MatchQuery::class)]
@@ -44,8 +44,8 @@ class SoftDeleteTest extends TestCase
         Post::create(['title' => 'Wymiana rozrządu']);
 
         $this->assertContains(
-            Fts5Schema::SOFT_DELETE_COLUMN,
-            $this->app->make(Fts5Schema::class)->columns('posts_fts')
+            Schema::SOFT_DELETE_COLUMN,
+            $this->app->make(Schema::class)->columns('posts_fts')
         );
     }
 
