@@ -62,6 +62,7 @@
     "prefer-stable": true,
     "support": {
         "issues": "https://github.com/mtk3d/scout-sqlite-fts5/issues",
-        "source": "https://github.com/mtk3d/scout-sqlite-fts5"
+        "source": "https://github.com/mtk3d/scout-sqlite-fts5",
+        "docs": "https://mtk3d.github.io/scout-sqlite-fts5/"
     }
 }

@@ -1,6 +1,6 @@
 # Troubleshooting
 
-[← back to the README](../README.md)
+[← back to the README](https://github.com/mtk3d/scout-sqlite-fts5#readme)
 
 ## Errors this package throws
 

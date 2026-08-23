@@ -1,0 +1,23 @@
+[book]
+title = "Scout SQLite FTS5"
+description = "A Laravel Scout driver backed by SQLite FTS5 — BM25 ranking and a typo-tolerant multi-pass search cascade, with no service to run."
+authors = ["Mateusz Cholewka"]
+language = "en"
+src = "docs"
+
+[build]
+build-dir = "book"
+
+[output.html]
+site-url = "/scout-sqlite-fts5/"
+git-repository-url = "https://github.com/mtk3d/scout-sqlite-fts5"
+edit-url-template = "https://github.com/mtk3d/scout-sqlite-fts5/edit/main/{path}"
+preferred-dark-theme = "ayu"
+no-section-label = true
+
+[output.html.search]
+enable = true
+
+[output.html.fold]
+enable = true
+level = 1

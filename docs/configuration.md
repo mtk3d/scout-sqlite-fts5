@@ -1,6 +1,6 @@
 # Configuration
 
-[← back to the README](../README.md)
+[← back to the README](https://github.com/mtk3d/scout-sqlite-fts5#readme)
 
 ```bash
 php artisan vendor:publish --tag=scout-fts5-config

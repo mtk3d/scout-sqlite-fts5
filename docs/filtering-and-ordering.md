@@ -1,6 +1,6 @@
 # Filtering and ordering
 
-[← back to the README](../README.md)
+[← back to the README](https://github.com/mtk3d/scout-sqlite-fts5#readme)
 
 ## Filters
 
