@@ -2,7 +2,7 @@
 
 All notable changes to `mtk3d/scout-sqlite-fts5` are documented here.
 
-## v0.1.0 - unreleased
+## v0.1.0 - 2026-08-23
 
 Initial release.
 

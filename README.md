@@ -16,21 +16,21 @@ That query finds *Jan Kowalski* despite the typo, because search runs as a casca
 
 ## Why this driver
 
-Scout's built-in `database` driver runs `LIKE '%term%'` across your columns. It works, and it stops working somewhere around a few thousand rows.
+Scout's built-in `database` driver queries your columns directly, without maintaining an index of its own.
 
-The alternatives that scale mean running something: Meilisearch, Typesense, Algolia. For a desktop app, a NativePHP build, a single-tenant SaaS, or a CLI tool, that is a lot of moving parts for a search box.
+Dedicated search engines — Meilisearch, Typesense, Algolia — mean running a service alongside your app. For a desktop app, a NativePHP build, a single-tenant SaaS, or a CLI tool, that is a lot of moving parts for a search box.
 
 SQLite already ships a real inverted index. This package points Scout at it.
 
 | | this package | `database` driver | Meilisearch / Typesense |
 |---|---|---|---|
 | Infrastructure | none | none | a service to run |
-| Index | FTS5 inverted index | none, scans on read | own datastore |
+| Index | FTS5 inverted index | queries columns directly | own datastore |
 | Ranking | BM25 | none | own |
 | Typo tolerance | four-pass cascade | none | built in |
 | Databases | SQLite only | all | any |
 
-If you need this on MySQL or Postgres, use [`namoshek/laravel-scout-database`](https://github.com/Namoshek/laravel-scout-database) instead — it builds a portable inverted index in ordinary tables, at the cost of a larger index and slower writes.
+If you need this on MySQL or Postgres, use [`namoshek/laravel-scout-database`](https://github.com/Namoshek/laravel-scout-database) instead — it builds a portable inverted index in ordinary tables, so it runs on every database Laravel supports.
 
 ## Requirements
 
