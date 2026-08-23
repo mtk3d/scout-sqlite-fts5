@@ -24,7 +24,7 @@ Dedicated search engines — Meilisearch, Typesense, Algolia — mean running a 
 
 SQLite already ships a real inverted index. This package points Scout at it.
 
-If you need this on MySQL or Postgres, use [`namoshek/laravel-scout-database`](https://github.com/Namoshek/laravel-scout-database) instead — it builds a portable inverted index in ordinary tables, so it runs on every database Laravel supports.
+Not on SQLite? [`namoshek/laravel-scout-database`](https://github.com/Namoshek/laravel-scout-database) is a Scout driver that builds its own inverted index in ordinary tables, and runs on every database Laravel supports.
 
 ## Requirements
 
