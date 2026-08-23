@@ -1,5 +1,9 @@
 # Scout SQLite FTS5
 
+[![Tests](https://github.com/mtk3d/scout-sqlite-fts5/actions/workflows/tests.yml/badge.svg)](https://github.com/mtk3d/scout-sqlite-fts5/actions/workflows/tests.yml)
+[![Latest version](https://img.shields.io/packagist/v/mtk3d/scout-sqlite-fts5.svg)](https://packagist.org/packages/mtk3d/scout-sqlite-fts5)
+[![License](https://img.shields.io/packagist/l/mtk3d/scout-sqlite-fts5.svg)](LICENSE.md)
+
 A [Laravel Scout](https://laravel.com/docs/scout) driver that keeps your search index in SQLite's own full-text engine — [FTS5](https://www.sqlite.org/fts5.html) — right next to your data.
 
 No daemon, no API key, no second datastore to keep in sync. `composer require`, one artisan command, and `Model::search()` works.
