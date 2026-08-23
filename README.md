@@ -3,7 +3,7 @@
 [![Tests](https://github.com/mtk3d/scout-sqlite-fts5/actions/workflows/tests.yml/badge.svg)](https://github.com/mtk3d/scout-sqlite-fts5/actions/workflows/tests.yml)
 [![Latest version](https://img.shields.io/packagist/v/mtk3d/scout-sqlite-fts5.svg)](https://packagist.org/packages/mtk3d/scout-sqlite-fts5)
 [![License](https://img.shields.io/github/license/mtk3d/scout-sqlite-fts5.svg)](LICENSE.md)
-[![Documentation](https://img.shields.io/badge/docs-online-blue.svg)](https://mtk3d.github.io/scout-sqlite-fts5/)
+[![Documentation](https://github.com/mtk3d/scout-sqlite-fts5/actions/workflows/docs.yml/badge.svg)](https://mtk3d.github.io/scout-sqlite-fts5/)
 
 A [Laravel Scout](https://laravel.com/docs/scout) driver that keeps your search index in SQLite's own full-text engine — [FTS5](https://www.sqlite.org/fts5.html) — right next to your data.
 
