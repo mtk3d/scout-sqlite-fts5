@@ -5,3 +5,5 @@ composer.lock
 .phpunit.result.cache
 .DS_Store
 /book
+mermaid.min.js
+mermaid-init.js

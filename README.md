@@ -169,9 +169,12 @@ Turning off `any` keeps multi-word queries strict; turning off `trigram` means s
 The full documentation is published at **[mtk3d.github.io/scout-sqlite-fts5](https://mtk3d.github.io/scout-sqlite-fts5/)**, built with [mdBook](https://rust-lang.github.io/mdBook/) from the same pages that live in [`docs/`](docs) in this repository.
 
 - [How it works](docs/how-it-works.md) — the search cascade, ranking, and what the index actually looks like
+- [Architecture](docs/architecture.md) — C4 diagrams of where this sits and what it is made of
 - [Filtering and ordering](docs/filtering-and-ordering.md) — filters, sorting, pagination, soft deletes, string keys
 - [Configuration](docs/configuration.md) — every option, what it costs, and when it needs a rebuild
 - [Recipes](docs/recipes.md) — search boxes, "did you mean", multi-tenancy, NativePHP, bulk imports
+- [Edge cases](docs/edge-cases.md) — CJK, zeroes, short queries, empty filters, and other boundaries
+- [Decisions](docs/decisions/index.md) — why the package works this way, and what each choice costs
 - [Troubleshooting](docs/troubleshooting.md) — every error this package throws, and what to do about it
 
 ## Things to know

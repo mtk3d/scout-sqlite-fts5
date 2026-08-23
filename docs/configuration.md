@@ -45,7 +45,7 @@ Useful variations:
 | `unicode61 remove_diacritics 2` | the default |
 | `porter unicode61 remove_diacritics 2` | English stemming — *engineering* matches *engineer* |
 | `unicode61 remove_diacritics 2 tokenchars '-_'` | keeps hyphens and underscores inside words |
-| `trigram` | substring matching in the index itself, at the cost of prefix queries |
+| `trigram` | substring matching in the index itself; requires queries of 3+ characters |
 
 See [SQLite's tokenizer documentation](https://www.sqlite.org/fts5.html#tokenizers) for the full grammar.
 
