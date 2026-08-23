@@ -114,13 +114,12 @@ class Fts5Schema
      */
     public function exists(string $table): bool
     {
-        $found = $this->connection
-            ->table('sqlite_master')
-            ->where('type', 'table')
-            ->where('name', $table)
-            ->count();
+        $found = $this->connection->selectOne(
+            "SELECT COUNT(*) AS total FROM sqlite_master WHERE type = 'table' AND name = ?",
+            [$this->physical($table)]
+        );
 
-        return $found > 0;
+        return ((array) $found)['total'] > 0;
     }
 
     /**
@@ -130,7 +129,7 @@ class Fts5Schema
      */
     public function columns(string $table): array
     {
-        $columns = $this->connection->select('PRAGMA table_info('.$this->quote($table).')');
+        $columns = $this->connection->select('PRAGMA table_info('.$this->reference($table).')');
 
         return array_map(fn ($column) => ((array) $column)['name'], $columns);
     }
@@ -195,7 +194,7 @@ class Fts5Schema
 
         $this->connection->statement(sprintf(
             'CREATE VIRTUAL TABLE %s USING fts5(%s)',
-            $this->quote($table),
+            $this->reference($table),
             implode(', ', $columns)
         ));
 
@@ -211,7 +210,7 @@ class Fts5Schema
             return false;
         }
 
-        $this->connection->statement('DROP TABLE '.$this->quote($table));
+        $this->connection->statement('DROP TABLE '.$this->reference($table));
 
         return true;
     }
@@ -226,11 +225,34 @@ class Fts5Schema
             return;
         }
 
-        $quoted = $this->quote($table);
+        $reference = $this->reference($table);
 
         $this->connection->statement(
-            "INSERT INTO {$quoted}({$quoted}) VALUES('optimize')"
+            "INSERT INTO {$reference}({$reference}) VALUES('optimize')"
         );
+    }
+
+    /**
+     * How an index table is referred to in raw SQL: quoted, and carrying the
+     * connection's table prefix.
+     *
+     * The query builder adds that prefix itself, so it is given plain table
+     * names while every hand-written fragment — `CREATE`, `MATCH`, `bm25()`,
+     * `PRAGMA` — goes through here. Getting this wrong only shows up on
+     * connections that set a prefix, which is exactly when it is hardest to
+     * debug.
+     */
+    public function reference(string $table): string
+    {
+        return $this->quote($this->physical($table));
+    }
+
+    /**
+     * The name the table actually has in the database file.
+     */
+    public function physical(string $table): string
+    {
+        return $this->connection->getTablePrefix().$table;
     }
 
     /**

@@ -29,7 +29,7 @@ class SearchPass
      */
     public static function match(string $name, string $table, string $expression, Fts5Schema $schema): self
     {
-        $quoted = $schema->quote($table);
+        $quoted = $schema->reference($table);
 
         return new self(
             $name,
@@ -61,7 +61,7 @@ class SearchPass
         Fts5Schema $schema,
         float $ratio = 0.4
     ): self {
-        $content = $schema->quote($table).'.'.$schema->quote(Fts5Schema::CONTENT_COLUMN);
+        $content = $schema->reference($table).'.'.$schema->quote(Fts5Schema::CONTENT_COLUMN);
 
         $hit = "(CASE WHEN {$content} LIKE ? THEN 1 ELSE 0 END)";
 

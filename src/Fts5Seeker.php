@@ -307,7 +307,7 @@ class Fts5Seeker
      */
     private function documentExpression(Model $model, string $table): string
     {
-        return $this->schema->quote($table).'.'.$this->schema->quote(
+        return $this->schema->reference($table).'.'.$this->schema->quote(
             $this->schema->documentColumn($model)
         );
     }
