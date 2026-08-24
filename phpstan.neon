@@ -1,0 +1,40 @@
+includes:
+    - vendor/larastan/larastan/extension.neon
+
+parameters:
+    level: 6
+
+    paths:
+        - src
+        - tests
+
+    # The package ships no application, so there is no `config/` for Larastan to
+    # read model definitions out of.
+    checkModelProperties: false
+
+    ignoreErrors:
+        # Scout's `Searchable` is a trait, not an interface, so PHP has no type
+        # that means "an Eloquent model Scout can index". Every model reaching
+        # these calls arrives through Scout, which only ever hands over models
+        # using the trait; `searchableFilters()` is optional and stays guarded
+        # by `method_exists` at the call site. Should Scout ever publish an
+        # interface, this block is what gets deleted.
+        -
+            identifier: method.notFound
+            message: '#Call to an undefined method Illuminate\\Database\\Eloquent\\Model::(getScoutKey|getScoutKeyName|getScoutModelsByIds|queryScoutModelsByIds|searchableAs|toSearchableArray)\(\)#'
+            paths:
+                - src
+
+        # `paginate()` is declared as returning the LengthAwarePaginator
+        # *interface*, which omits the Collection methods the concrete paginator
+        # forwards. Only the tests reach for them.
+        -
+            identifier: method.notFound
+            message: '#Call to an undefined method Illuminate\\Contracts\\Pagination\\LengthAwarePaginator::pluck\(\)#'
+            paths:
+                - tests
+        -
+            identifier: argument.type
+            message: '#expects Countable\|iterable, Illuminate\\Contracts\\Pagination\\LengthAwarePaginator given#'
+            paths:
+                - tests

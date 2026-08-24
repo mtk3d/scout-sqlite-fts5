@@ -7,6 +7,13 @@ namespace ScoutFts5\Tests\Stubs;
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Scout\Searchable;
 
+/**
+ * @property string $name
+ * @property string|null $city
+ * @property string|null $notes
+ * @property int $tenant_id
+ * @property string $status
+ */
 class Customer extends Model
 {
     use Searchable;

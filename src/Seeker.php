@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace ScoutFts5;
 
-use Illuminate\Database\ConnectionInterface;
+use Illuminate\Database\Connection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Database\Query\Expression;
@@ -40,7 +40,7 @@ class Seeker
     private array $modelColumns = [];
 
     public function __construct(
-        private ConnectionInterface $connection,
+        private Connection $connection,
         private Schema $schema,
         private Normalizer $normalizer,
         private SearchConfiguration $configuration,
@@ -51,6 +51,8 @@ class Seeker
      *
      * Passing `$perPage` switches the search to pagination: the returned keys
      * are one page long, while the total reports every document that matched.
+     *
+     * @param  Builder<Model>  $builder
      */
     public function search(Builder $builder, int $page = 1, ?int $perPage = null): SearchResult
     {
@@ -70,11 +72,21 @@ class Seeker
         $limit = $perPage ?? $builder->limit;
         $offset = $perPage !== null ? (max($page, 1) - 1) * $perPage : 0;
 
-        foreach ($this->passes($words, $table) as $pass) {
-            $total = $this->newQuery($builder, $table, $pass)->count();
+        // An empty page proves the pass matched nothing only when the page
+        // could have held something in the first place. Past the first page,
+        // or with a limit of zero, it proves nothing — so there the total is
+        // asked for up front instead.
+        $emptyPageIsConclusive = $offset === 0 && ($limit === null || $limit > 0);
 
-            if ($total === 0) {
-                continue;
+        foreach ($this->passes($words, $table) as $pass) {
+            $total = null;
+
+            if (! $emptyPageIsConclusive) {
+                $total = $this->newQuery($builder, $table, $pass)->count();
+
+                if ($total === 0) {
+                    continue;
+                }
             }
 
             $query = $this->newQuery($builder, $table, $pass)
@@ -86,7 +98,20 @@ class Seeker
                 $query->offset($offset)->limit($limit);
             }
 
-            return new SearchResult($builder, $query->pluck('scout_fts5_key')->all(), $total, $pass->name);
+            $ids = $query->pluck('scout_fts5_key')->all();
+
+            if ($ids === [] && $emptyPageIsConclusive) {
+                continue;
+            }
+
+            // A page that came back short is the whole result set; only a full
+            // one can be hiding more behind it, and only then is it worth
+            // paying for a second query to find out how much.
+            $total ??= $limit === null || count($ids) < $limit
+                ? count($ids)
+                : $this->newQuery($builder, $table, $pass)->count();
+
+            return new SearchResult($builder, $ids, $total, $pass->name);
         }
 
         return SearchResult::empty($builder);
@@ -156,6 +181,8 @@ class Seeker
     /**
      * Builds a query for one pass, with the builder's filters applied but
      * without ordering or pagination.
+     *
+     * @param  Builder<Model>  $builder
      */
     private function newQuery(Builder $builder, string $table, SearchPass $pass): QueryBuilder
     {
@@ -173,6 +200,8 @@ class Seeker
      * Joins the model's own table when the search needs columns that live
      * there — an explicit ordering, or a filter on a column that is not part
      * of the index.
+     *
+     * @param  Builder<Model>  $builder
      */
     private function applyJoin(QueryBuilder $query, Builder $builder, string $table): void
     {
@@ -203,6 +232,8 @@ class Seeker
 
     /**
      * Applies the builder's `where`, `whereIn` and `whereNotIn` constraints.
+     *
+     * @param  Builder<Model>  $builder
      */
     private function applyFilters(QueryBuilder $query, Builder $builder, string $table): void
     {
@@ -229,6 +260,8 @@ class Seeker
      *
      * This has to happen in SQL rather than after hydrating models, because
      * the order is what decides which documents land on which page.
+     *
+     * @param  Builder<Model>  $builder
      */
     private function applyOrder(QueryBuilder $query, Builder $builder, SearchPass $pass): void
     {
@@ -245,6 +278,8 @@ class Seeker
 
     /**
      * Resolves a filter field to the table that can answer it.
+     *
+     * @param  Builder<Model>  $builder
      *
      * @throws ScoutFts5Exception
      */
@@ -269,6 +304,8 @@ class Seeker
 
     /**
      * Whether this search has to reach into the model's own table.
+     *
+     * @param  Builder<Model>  $builder
      */
     private function needsModelTable(Builder $builder): bool
     {
@@ -290,6 +327,7 @@ class Seeker
     /**
      * Every field the builder filters on, however the constraint was added.
      *
+     * @param  Builder<Model>  $builder
      * @return string[]
      */
     private function filteredFields(Builder $builder): array

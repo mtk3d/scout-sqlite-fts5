@@ -42,6 +42,9 @@ class ScoutFts5Exception extends RuntimeException
         );
     }
 
+    /**
+     * @param  string[]  $available
+     */
     public static function unknownFilter(string $field, string $model, array $available): self
     {
         $known = $available === [] ? 'none' : implode(', ', $available);

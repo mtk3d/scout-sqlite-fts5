@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace ScoutFts5\Support;
 
-use Illuminate\Database\ConnectionInterface;
+use Illuminate\Database\Connection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use ScoutFts5\Exceptions\ScoutFts5Exception;
@@ -38,7 +38,7 @@ class Schema
     public const SOFT_DELETE_COLUMN = '__soft_deleted';
 
     public function __construct(
-        private ConnectionInterface $connection,
+        private Connection $connection,
         private SearchConfiguration $configuration,
     ) {}
 

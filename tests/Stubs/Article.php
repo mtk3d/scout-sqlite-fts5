@@ -11,6 +11,8 @@ use Laravel\Scout\Searchable;
 /**
  * A model with a string key, which is stored in an explicit `doc_id` column
  * rather than the index table's `rowid`.
+ *
+ * @property string $title
  */
 class Article extends Model
 {

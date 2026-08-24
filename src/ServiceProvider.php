@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace ScoutFts5;
 
 use Illuminate\Contracts\Container\Container;
-use Illuminate\Database\ConnectionInterface;
+use Illuminate\Database\Connection;
 use Illuminate\Database\DatabaseManager;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 use Laravel\Scout\EngineManager;
@@ -106,7 +106,7 @@ class ServiceProvider extends BaseServiceProvider
      *
      * @throws ScoutFts5Exception
      */
-    private function connection(Container $app): ConnectionInterface
+    private function connection(Container $app): Connection
     {
         $connection = $app->make(DatabaseManager::class)
             ->connection($app->make('config')->get('scout-fts5.connection'));

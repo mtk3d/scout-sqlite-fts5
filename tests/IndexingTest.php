@@ -150,6 +150,9 @@ class IndexingTest extends TestCase
         Customer::create(['name' => 'Jan Kowalski']);
     }
 
+    /**
+     * @return Collection<int, \stdClass>
+     */
     private function indexRows(string $table): Collection
     {
         return $this->connection()->table($table)->get();

@@ -50,6 +50,8 @@ class Engine extends ScoutEngine
 
     /**
      * Performs the given search.
+     *
+     * @param  Builder<Model>  $builder
      */
     public function search(Builder $builder): SearchResult
     {
@@ -59,6 +61,7 @@ class Engine extends ScoutEngine
     /**
      * Performs the given search, returning a single page of results.
      *
+     * @param  Builder<Model>  $builder
      * @param  int  $perPage
      * @param  int  $page
      */
@@ -71,6 +74,7 @@ class Engine extends ScoutEngine
      * Returns the keys of the matching documents, best match first.
      *
      * @param  SearchResult  $results
+     * @return Collection<int, mixed>
      */
     public function mapIds($results): Collection
     {
@@ -81,8 +85,10 @@ class Engine extends ScoutEngine
      * Hydrates the matching documents into models, keeping the order the
      * search put them in.
      *
+     * @param  Builder<Model>  $builder
      * @param  SearchResult  $results
      * @param  Model  $model
+     * @return EloquentCollection<int, Model>
      */
     public function map(Builder $builder, $results, $model): EloquentCollection
     {
@@ -103,8 +109,10 @@ class Engine extends ScoutEngine
     /**
      * The lazy counterpart of {@see map()}.
      *
+     * @param  Builder<Model>  $builder
      * @param  SearchResult  $results
      * @param  Model  $model
+     * @return LazyCollection<int, Model>
      */
     public function lazyMap(Builder $builder, $results, $model): LazyCollection
     {
@@ -151,6 +159,7 @@ class Engine extends ScoutEngine
      * with `scout:fts5-create`, which can see the model.
      *
      * @param  string  $name
+     * @param  array<string, mixed>  $options
      */
     public function createIndex($name, array $options = []): void
     {

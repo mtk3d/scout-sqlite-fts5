@@ -86,6 +86,18 @@ class TablePrefixTest extends TestCase
         $this->assertSame('trigram', Customer::search('kowerlski')->raw()->pass());
     }
 
+    public function testItFlushesThroughThePrefix(): void
+    {
+        Customer::create(['name' => 'Jan Kowalski']);
+
+        $this->assertCount(1, Customer::search('kowalski')->get());
+
+        $this->artisan('scout:flush', ['model' => Customer::class])->assertSuccessful();
+
+        $this->assertCount(0, Customer::search('kowalski')->get());
+        $this->assertTrue($this->app->make(Schema::class)->exists('customers_fts'));
+    }
+
     public function testItsCommandsWorkThroughThePrefix(): void
     {
         Customer::withoutSyncingToSearch(fn () => Customer::create(['name' => 'Jan Kowalski']));

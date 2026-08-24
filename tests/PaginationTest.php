@@ -43,6 +43,28 @@ class PaginationTest extends TestCase
         $this->assertSame(3, $page->lastPage());
     }
 
+    public function testItStillReportsTheTotalForAPageBeyondTheEnd(): void
+    {
+        $this->createCustomers(5);
+
+        $page = Customer::search('kowalski')->paginate(2, 'page', 9);
+
+        // An empty page here means "you asked past the end", not "the search
+        // found nothing" — the total has to survive the difference.
+        $this->assertCount(0, $page->items());
+        $this->assertSame(5, $page->total());
+    }
+
+    public function testItReportsTheFullTotalUnderAnExplicitLimit(): void
+    {
+        $this->createCustomers(5);
+
+        $result = Customer::search('kowalski')->take(2)->raw();
+
+        $this->assertCount(2, $result->ids());
+        $this->assertSame(5, $result->total());
+    }
+
     public function testItsPagesNeitherRepeatNorDropResults(): void
     {
         $this->createCustomers(5);

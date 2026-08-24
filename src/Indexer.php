@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace ScoutFts5;
 
-use Illuminate\Database\ConnectionInterface;
+use Illuminate\Database\Connection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
@@ -29,7 +29,7 @@ class Indexer
     private const CHUNK_SIZE = 500;
 
     public function __construct(
-        private ConnectionInterface $connection,
+        private Connection $connection,
         private Schema $schema,
         private Normalizer $normalizer,
         private SearchConfiguration $configuration,
@@ -88,7 +88,7 @@ class Indexer
                     continue;
                 }
 
-                $this->deleteKeys($first, $group->map(fn (Model $model) => $model->getScoutKey())->all());
+                $this->deleteKeys($first, $group->map(fn (Model $model): mixed => $model->getScoutKey())->all());
             }
         } catch (Throwable $e) {
             throw new ScoutFts5Exception('Removing documents from the FTS5 search index failed.', 0, $e);
@@ -106,7 +106,7 @@ class Indexer
             return;
         }
 
-        $this->connection->statement('DELETE FROM '.$this->schema->quote($table));
+        $this->connection->statement('DELETE FROM '.$this->schema->reference($table));
     }
 
     /**

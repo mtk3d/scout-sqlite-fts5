@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace ScoutFts5;
 
 use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Database\Eloquent\Model;
 use Laravel\Scout\Builder;
 
 /**
@@ -12,9 +13,13 @@ use Laravel\Scout\Builder;
  * many documents matched in total, and which pass of the search cascade
  * produced them.
  */
+/**
+ * @implements Arrayable<string, mixed>
+ */
 class SearchResult implements Arrayable
 {
     /**
+     * @param  Builder<Model>  $builder
      * @param  array<int, mixed>  $ids
      */
     public function __construct(
@@ -28,6 +33,8 @@ class SearchResult implements Arrayable
 
     /**
      * An empty result for the given search.
+     *
+     * @param  Builder<Model>  $builder
      */
     public static function empty(Builder $builder): self
     {
@@ -36,6 +43,8 @@ class SearchResult implements Arrayable
 
     /**
      * The builder the search was performed with.
+     *
+     * @return Builder<Model>
      */
     public function builder(): Builder
     {
@@ -75,6 +84,8 @@ class SearchResult implements Arrayable
 
     /**
      * {@inheritDoc}
+     *
+     * @return array<string, mixed>
      */
     public function toArray(): array
     {
