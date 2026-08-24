@@ -39,6 +39,12 @@ There is no migration to publish. Index tables are derived from the models that 
 
 **[Troubleshooting](troubleshooting.md)** lists every error the package throws with what to do about it, plus the behaviour that looks like a bug and is not.
 
+## Status
+
+This is version 0, the first implementation. The search was built for a NativePHP application and shaped by what that application needed, which is the case it is known to serve well — not evidence that it is the right shape for every application.
+
+Development continues, and the way documents are written and stored is the part most likely to change: a later version may index different things, store them differently, or lay the tables out another way entirely. Nothing about the current layout is frozen. Such a change costs a `scout:fts5-rebuild` rather than a migration you write, because the index is derived from your models — but it is still a change, so pin the version you are on and read the [changelog](https://github.com/mtk3d/scout-sqlite-fts5/blob/main/CHANGELOG.md) before upgrading.
+
 ## Requirements
 
 - PHP 8.3+

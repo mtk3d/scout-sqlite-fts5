@@ -38,3 +38,9 @@ Optimising for simplicity fixed the workflow: index tables come from models rath
 Optimising for "works without tuning" is why search is a cascade rather than one query with knobs — [decision 4](0004-a-cascade-of-passes.md) — and why the substring pass carries a threshold that a user should never have to think about, in [decision 5](0005-a-threshold-for-substring-matching.md).
 
 The remaining records are consequences of those three.
+
+## Where this stands
+
+Everything above describes version 0, the first implementation. It was built for the search in a NativePHP application, and that application is the evidence behind it: the passes, the thresholds and the storage layout are what worked there, not conclusions drawn from a broad sample of applications. They may well be wrong for yours.
+
+The decision recorded here — cheap to adopt, cheap to operate — is the part meant to hold. How it is served is not settled: a later version may write and store documents in a completely different way, and these records will be superseded as that happens. What protects an application from that churn is [decision 2](0002-tables-derived-from-models.md): the index is derived from models rather than owned as a schema, so a change of layout costs a rebuild rather than a migration.
