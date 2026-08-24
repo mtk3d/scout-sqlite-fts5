@@ -18,7 +18,7 @@ Everything `toSearchableArray()` returns is flattened, joined with spaces, norma
 
 Values from `searchableFilters()` become `UNINDEXED` columns: stored and filterable, but not searched.
 
-This layout is version 0's, and version 0 is the first implementation of it — one that grew out of a NativePHP application rather than out of a survey of every way a document could be stored. A later version may write and store documents completely differently. Because the tables are derived from your models rather than from a migration you wrote, adopting such a change is a `scout:fts5-rebuild`; nothing here is a schema you own.
+This layout is version 0's, and version 0 is the first implementation of it — one that grew out of a NativePHP application rather than out of a survey of every way a document could be stored. It holds for the whole of version 0: `0.x` releases do not change it under you. Version 1 may write and store documents completely differently, and because the tables are derived from your models rather than from a migration you wrote, adopting that is a `scout:fts5-rebuild`; nothing here is a schema you own.
 
 ### Where the key goes
 

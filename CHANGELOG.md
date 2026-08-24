@@ -2,7 +2,7 @@
 
 All notable changes to `mtk3d/scout-sqlite-fts5` are documented here.
 
-Version 0 is the first implementation, built for a NativePHP application. How documents are written and stored may change completely in a later version; such a change is announced here and adopted with `scout:fts5-rebuild`.
+Version 0 is the first implementation, built for a NativePHP application. The index format stays compatible across every `0.x` release; how documents are written and stored may change completely in version 1, and that change is announced here and adopted with `scout:fts5-rebuild`.
 
 ## v0.1.0 - 2026-08-23
 
